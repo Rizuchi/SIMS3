@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,7 +38,7 @@ namespace SIMS3
         public void showTable()
         {
             // Loads the data from your database into the grid
-            dataGridView_Student.DataSource = student.getStudentlist();
+            dataGridView_Student.DataSource = student.getStudentlist(new MySqlCommand("SELECT * FROM `student`"));
 
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
 
@@ -222,6 +223,63 @@ namespace SIMS3
             byte[] img = (byte[])dataGridView_Student.CurrentRow.Cells[9].Value;
             MemoryStream ms = new MemoryStream(img);
             pictureBox_Student.Image = Image.FromStream(ms);
+        }
+
+        private void button_delete_Click(object sender, EventArgs e)
+        {
+            // Assuming the text box for ID Number is named textBox_IDNumber
+            if (textBox_ID.Text == "")
+            {
+                MessageBox.Show("Please select a student to delete.", "Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int id = Convert.ToInt32(textBox_ID.Text);
+
+            // Confirmation (VERY IMPORTANT)
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to delete this student?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                // Assuming your student class instance is named 'student'
+                if (student.softDeleteStudent(id))
+                {
+                    MessageBox.Show("Student deleted successfully!", "Delete Student", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    showTable();
+
+                    // Clear all fields shown in the UI
+                    textBox_fname.Clear();
+                    textBox_Mname.Clear();
+                    textBox_LName.Clear();
+                    textBox_Sufix.Clear();
+                    textBox_Number.Clear();
+                    textBox_Address.Clear();
+                    textBox_ID.Clear();
+
+                    // Reset Gender radio buttons
+                    radioButton_Female.Checked = false;
+                    radioButton_Male.Checked = false;
+
+                    // Reset Date of Birth to today
+                    dateTimePicker1.Value = DateTime.Now;
+
+                    // Clear the picture box
+                    pictureBox_Student.Image = null;
+
+                    // IMPORTANT: Call your method to refresh the DataGridView here 
+                    // so the deleted student disappears from the list.
+                    // Example: LoadStudentData(); 
+                }
+                else
+                {
+                    MessageBox.Show("Student not deleted.", "Delete Student", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

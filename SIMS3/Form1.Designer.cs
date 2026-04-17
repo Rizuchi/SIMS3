@@ -287,13 +287,14 @@
             btnPrint3.ForeColor = SystemColors.ButtonHighlight;
             btnPrint3.Image = (Image)resources.GetObject("btnPrint3.Image");
             btnPrint3.ImageAlign = ContentAlignment.MiddleLeft;
-            btnPrint3.Location = new Point(-3, 125);
+            btnPrint3.Location = new Point(-3, 128);
             btnPrint3.Name = "btnPrint3";
             btnPrint3.Padding = new Padding(23, 0, 35, 0);
-            btnPrint3.Size = new Size(259, 65);
+            btnPrint3.Size = new Size(259, 62);
             btnPrint3.TabIndex = 5;
             btnPrint3.Text = "Print";
             btnPrint3.UseVisualStyleBackColor = true;
+            btnPrint3.Click += btnPrint3_Click;
             // 
             // btnManageScore
             // 
@@ -311,6 +312,7 @@
             btnManageScore.Text = "Manage Score";
             btnManageScore.TextAlign = ContentAlignment.MiddleRight;
             btnManageScore.UseVisualStyleBackColor = true;
+            btnManageScore.Click += btnManageScore_Click;
             // 
             // btnNewScore
             // 
@@ -328,6 +330,7 @@
             btnNewScore.Text = "New Score";
             btnNewScore.TextAlign = ContentAlignment.MiddleRight;
             btnNewScore.UseVisualStyleBackColor = true;
+            btnNewScore.Click += btnNewScore_Click;
             // 
             // btnScore
             // 
@@ -814,6 +817,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(11, 15, 26);
             ClientSize = new Size(1236, 730);
             Controls.Add(panel_main);
             Controls.Add(pnlMenu);

@@ -44,7 +44,6 @@
             button_Print = new Button();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
-            panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Course).BeginInit();
             panel_dataholder.SuspendLayout();
             panel4.SuspendLayout();
@@ -140,9 +139,8 @@
             // 
             // panel8
             // 
-            panel8.Controls.Add(panel10);
-            panel8.Dock = DockStyle.Top;
-            panel8.Location = new Point(30, 521);
+            panel8.Dock = DockStyle.Bottom;
+            panel8.Location = new Point(30, 516);
             panel8.Name = "panel8";
             panel8.Size = new Size(899, 52);
             panel8.TabIndex = 40;
@@ -150,8 +148,8 @@
             // panel10
             // 
             panel10.BackColor = Color.RoyalBlue;
-            panel10.Dock = DockStyle.Top;
-            panel10.Location = new Point(0, 0);
+            panel10.Dock = DockStyle.Bottom;
+            panel10.Location = new Point(30, 506);
             panel10.Name = "panel10";
             panel10.Size = new Size(899, 10);
             panel10.TabIndex = 36;
@@ -168,16 +166,16 @@
             dataGridView_Course.Name = "dataGridView_Course";
             dataGridView_Course.RowHeadersWidth = 51;
             dataGridView_Course.RowTemplate.Height = 80;
-            dataGridView_Course.Size = new Size(899, 376);
+            dataGridView_Course.Size = new Size(899, 511);
             dataGridView_Course.TabIndex = 39;
             // 
             // panel_dataholder
             // 
             panel_dataholder.Controls.Add(dataGridView_Course);
-            panel_dataholder.Dock = DockStyle.Top;
+            panel_dataholder.Dock = DockStyle.Fill;
             panel_dataholder.Location = new Point(30, 145);
             panel_dataholder.Name = "panel_dataholder";
-            panel_dataholder.Size = new Size(899, 376);
+            panel_dataholder.Size = new Size(899, 511);
             panel_dataholder.TabIndex = 41;
             // 
             // panel4
@@ -213,8 +211,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(11, 15, 26);
             ClientSize = new Size(959, 686);
-            Controls.Add(panel4);
+            Controls.Add(panel10);
             Controls.Add(panel8);
+            Controls.Add(panel4);
             Controls.Add(panel_dataholder);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -229,7 +228,6 @@
             panel3.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            panel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView_Course).EndInit();
             panel_dataholder.ResumeLayout(false);
             panel4.ResumeLayout(false);
@@ -249,8 +247,8 @@
         private DataGridView dataGridView_Course;
         private Panel panel_dataholder;
         private Panel panel4;
-        private Button button_Print;
         private Button button1;
         private TextBox textBox_search;
+        private Button button_Print;
     }
 }

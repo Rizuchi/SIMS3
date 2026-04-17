@@ -1,17 +1,25 @@
+using System.Reflection;
+
 namespace SIMS3
 {
     public partial class Form1 : Form
     {
+
+
         StudentClass student = new StudentClass();
         public Form1()
         {
             InitializeComponent();
+
             hideSubMenu();
+
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             studentCount();
+
         }
 
         private void studentCount()
@@ -76,6 +84,7 @@ namespace SIMS3
         private void openChildForm(Form childForm)
         {
             if (activeForm != null)
+
             {
                 activeForm.Close();
             }
@@ -89,12 +98,10 @@ namespace SIMS3
             // Replace 'panelMain' with the actual name of the empty Panel in the middle of your design.
             panel_main.Controls.Add(childForm);
             panel_main.Tag = childForm;
-
-
-
             childForm.BringToFront();
             childForm.Show();
         }
+
         private void btnRegistration_Click(object sender, EventArgs e)
         {
             openChildForm(new RegistryFormcs());
@@ -123,6 +130,25 @@ namespace SIMS3
         private void btnPrint2_Click(object sender, EventArgs e)
         {
             openChildForm(new PrintCourseForm());
+        }
+
+        private void btnNewScore_Click(object sender, EventArgs e)
+        {
+
+            openChildForm(new ScoreForm2());
+
+        }
+
+        private void btnManageScore_Click(object sender, EventArgs e)
+
+        {
+
+            openChildForm(new ManageScoreForm());
+        }
+
+        private void btnPrint3_Click(object sender, EventArgs e)
+        {
+            openChildForm(new PrintScoreForm());
         }
     }
 }

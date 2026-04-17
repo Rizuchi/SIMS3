@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SIMS3
 {
-    public partial class  ManageCourseForm : Form
+    public partial class ManageCourseForm : Form
     {
         CourseClass course = new CourseClass();
         public ManageCourseForm()
@@ -27,6 +27,7 @@ namespace SIMS3
         public void showData()
         {
             dataGridView_Course.DataSource = course.getCourse(new MySqlCommand("SELECT * FROM `course`"));
+            dataGridView_Course.Columns["CourseUnits"].DefaultCellStyle.Format = "0.0";
             dataGridView_Course.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
             dataGridView_Course.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
 
@@ -63,6 +64,7 @@ namespace SIMS3
             textBox_units.Clear();
             textBox_department.Clear();
             textBox_Description.Clear();
+            textBox_ID.Clear();
         }
 
         private void button_Update_Click(object sender, EventArgs e)
@@ -103,40 +105,21 @@ namespace SIMS3
 
         private void button_Delete_Click(object sender, EventArgs e)
         {
-            if (textBox_ID.Text == "")
-            {
-                MessageBox.Show("Please select a course to delete.", "Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             int id = Convert.ToInt32(textBox_ID.Text);
 
-            // Confirmation (VERY IMPORTANT)
-            DialogResult result = MessageBox.Show(
-                "Are you sure you want to delete this course?",
-                "Confirm Delete",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.Yes)
+            if (course.deleteCourse(id))
             {
-                if (course.deleteCourse(id))
-                {
-                    MessageBox.Show("Course deleted successfully!", "Delete Course", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Course deleted (deactivated) successfully!", "Delete Course", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Clear fields
-                    textBox_ID.Clear();
-                    textBox_Subject.Clear();
-                    textBox_Hourse.Clear();
-                    textBox_units.Clear();
-                    textBox_department.Clear();
-                    textBox_Description.Clear();
-                }
-                else
-                {
-                    MessageBox.Show("Course not deleted.", "Delete Course", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // THIS IS THE MAGIC LINE: It reloads the grid so the checkbox actually disappears!
+                showData();
+
+                // Optional: clear the textboxes after deleting
+                button_Clear_Click(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("Course not deleted.", "Delete Course", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -171,6 +154,9 @@ namespace SIMS3
             // 5: Description -> textBox_Description
             textBox_Description.Text = dataGridView_Course.CurrentRow.Cells[5].Value.ToString();
         }
-    }
+
+       
+     }
 }
+
 

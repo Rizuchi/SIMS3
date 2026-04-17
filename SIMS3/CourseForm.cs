@@ -63,6 +63,7 @@ namespace SIMS3
         public void showData()
         {
             dataGridView_Course.DataSource = course.getCourse(new MySqlCommand("SELECT * FROM `course`"));
+            dataGridView_Course.Columns["CourseUnits"].DefaultCellStyle.Format = "0.0";
             dataGridView_Course.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
             dataGridView_Course.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
 

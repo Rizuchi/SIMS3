@@ -80,7 +80,6 @@
             label1.Size = new Size(127, 28);
             label1.TabIndex = 43;
             label1.Text = "Select Class:";
-     
             // 
             // comboBox1
             // 
@@ -165,7 +164,7 @@
             dataGridView_Student.Name = "dataGridView_Student";
             dataGridView_Student.RowHeadersWidth = 51;
             dataGridView_Student.RowTemplate.Height = 80;
-            dataGridView_Student.Size = new Size(899, 376);
+            dataGridView_Student.Size = new Size(899, 420);
             dataGridView_Student.TabIndex = 34;
             // 
             // panel4
@@ -273,8 +272,8 @@
             // panel8
             // 
             panel8.Controls.Add(panel10);
-            panel8.Dock = DockStyle.Top;
-            panel8.Location = new Point(30, 521);
+            panel8.Dock = DockStyle.Bottom;
+            panel8.Location = new Point(30, 524);
             panel8.Name = "panel8";
             panel8.Size = new Size(899, 41);
             panel8.TabIndex = 39;
@@ -291,10 +290,10 @@
             // panel_holder
             // 
             panel_holder.Controls.Add(dataGridView_Student);
-            panel_holder.Dock = DockStyle.Top;
+            panel_holder.Dock = DockStyle.Fill;
             panel_holder.Location = new Point(30, 145);
             panel_holder.Name = "panel_holder";
-            panel_holder.Size = new Size(899, 376);
+            panel_holder.Size = new Size(899, 420);
             panel_holder.TabIndex = 40;
             // 
             // PrintStudent

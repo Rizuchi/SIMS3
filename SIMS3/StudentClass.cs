@@ -15,16 +15,16 @@ namespace SIMS3
             // create a function to add a new students to the database
             public bool insertStudent(string fname, string mname, string lname, string suffix, DateTime bdate, string gender, string phone, string address, byte[] img)
             {
-                MySqlCommand command = new MySqlCommand("INSERT INTO `student`(`FirstName`, `MiddleName`, `LastName`, `Suffix`, `Birthdate`, `Gender`, `Phone`, `Address`, `Photo`) VALUES (@fn, @mn, @ln, @sfx, @bd, @gd, @ph, @adr, @img)", connect.GetConnection());
+            MySqlCommand command = new MySqlCommand("INSERT INTO `student`(`FirstName`, `MiddleName`, `LastName`, `Suffix`, `Birthdate`, `Gender`, `Phone`, `Address`, `Photo`, `IsActive`) VALUES (@fn, @mn, @ln, @sfx, @bdt, @gnd, @phn, @adr, @img, 1)", connect.GetConnection());
 
-                //@fn, @ln, @bd, @gd, @ph, @adr, @img
-                command.Parameters.Add("@fn", MySqlDbType.VarChar).Value = fname;
+            //@fn, @ln, @bd, @gd, @ph, @adr, @img
+            command.Parameters.Add("@fn", MySqlDbType.VarChar).Value = fname;
                 command.Parameters.Add("@mn", MySqlDbType.VarChar).Value = mname;   // Added Middle Name
                 command.Parameters.Add("@ln", MySqlDbType.VarChar).Value = lname;
                 command.Parameters.Add("@sfx", MySqlDbType.VarChar).Value = suffix; // Added Suffix
-                command.Parameters.Add("@bd", MySqlDbType.Date).Value = bdate;
-                command.Parameters.Add("@gd", MySqlDbType.VarChar).Value = gender;
-                command.Parameters.Add("@ph", MySqlDbType.VarChar).Value = phone;
+                command.Parameters.Add("@bdt", MySqlDbType.Date).Value = bdate;
+                command.Parameters.Add("@gnd", MySqlDbType.VarChar).Value = gender;
+                command.Parameters.Add("@phn", MySqlDbType.VarChar).Value = phone;
                 command.Parameters.Add("@adr", MySqlDbType.VarChar).Value = address;
                 command.Parameters.Add("@img", MySqlDbType.Blob).Value = img;
 
@@ -42,10 +42,10 @@ namespace SIMS3
 
             }
 
-            public DataTable getStudentlist()
+            public DataTable getStudentlist(MySqlCommand command)
             {
                 // Fix 1: Added () to GetConnection()
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `student`", connect.GetConnection());
+                command.Connection = connect.GetConnection();
 
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
@@ -151,6 +151,29 @@ namespace SIMS3
                 return table;
 
             }
+
+
+        // Method to "soft delete" a student by setting IsDeleted to 1
+        public bool softDeleteStudent(int id)
+        {
+            // Updates the record to mark it as deleted instead of dropping the row
+            MySqlCommand command = new MySqlCommand("UPDATE student SET IsActive = 0 WHERE `Student ID` = @id", connect.GetConnection());
+
+            command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
+
+            connect.openConnect();
+
+            if (command.ExecuteNonQuery() == 1)
+            {
+                connect.closeConnect();
+                return true;
+            }
+            else
+            {
+                connect.closeConnect();
+                return false;
+            }
         }
     }
+}
 

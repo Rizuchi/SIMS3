@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -115,7 +116,7 @@ namespace SIMS3
         public void showTable()
         {
             // Loads the data from your database into the grid
-            dataGridView_Student.DataSource = student.getStudentlist();
+            dataGridView_Student.DataSource = student.getStudentlist(new MySqlCommand("SELECT * FROM `student`"));
 
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
 

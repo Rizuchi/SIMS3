@@ -53,7 +53,7 @@ namespace SIMS3
         public bool updateCourse(int id, string cName, double hr, double units, string dept, string desc)
         {
 
-            MySqlCommand command = new MySqlCommand("UPDATE course SET CourseName=@cn, CourseHour=@hr, CourseUnits=@cu, Department=@dept, Description=@desc WHERE CourseId=@id", connect.GetConnection());
+            MySqlCommand command = new MySqlCommand("UPDATE course SET CourseName=@cn, CourseHour=@hr, CourseUnits=@cu, Department=@dept, Description=@desc WHERE `Course ID`=@id", connect.GetConnection());
 
             command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
             command.Parameters.Add("@cn", MySqlDbType.VarChar).Value = cName;
@@ -81,7 +81,7 @@ namespace SIMS3
 
         public bool deleteCourse(int id)
         {
-            MySqlCommand command = new MySqlCommand("DELETE FROM course WHERE CourseId = @id", connect.GetConnection());
+            MySqlCommand command = new MySqlCommand("UPDATE student SET IsActive = 0 WHERE `Student ID` = @id", connect.GetConnection());
 
             command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
 
@@ -115,6 +115,8 @@ namespace SIMS3
            return table;
 
         }
+
+        
     }
 }
 

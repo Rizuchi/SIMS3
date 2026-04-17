@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+
 
 namespace SIMS3
 {
@@ -17,6 +19,7 @@ namespace SIMS3
         public PrintCourseForm()
         {
             InitializeComponent();
+           
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -48,6 +51,12 @@ namespace SIMS3
 
         private void ApplyGridStyle()
         {
+            string courseQuery = "SELECT * FROM `course` WHERE `IsActive` = 1";
+            dataGridView_Course.DataSource = course.getCourse(new MySqlCommand(courseQuery));
+
+            // 2. Hide the IsActive column
+            // Note: Make sure "dataGridView_course" matches the actual name of your grid!
+            dataGridView_Course.Columns["IsActive"].Visible = false;
             // 1. General Grid Appearance
             dataGridView_Course.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
             dataGridView_Course.GridColor = Color.FromArgb(50, 60, 90);       // Visible but soft grid lines
@@ -72,7 +81,7 @@ namespace SIMS3
             // Optional: Hide the little row header arrow column on the far left to make it cleaner
             dataGridView_Course.RowHeadersVisible = false;
             //column sizez
-            dataGridView_Course.Columns["CourseId"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView_Course.Columns["Course ID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView_Course.Columns["CourseHour"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView_Course.Columns["CourseUnits"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView_Course.Columns["IsActive"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells; // Added IsActive!
@@ -80,7 +89,6 @@ namespace SIMS3
             dataGridView_Course.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             // 4. Force the number columns to always show one decimal place (e.g., 3.0)
-            dataGridView_Course.Columns["CourseHour"].DefaultCellStyle.Format = "0.0";
             dataGridView_Course.Columns["CourseUnits"].DefaultCellStyle.Format = "0.0";
             dataGridView_Course.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 

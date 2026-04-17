@@ -1,12 +1,14 @@
-﻿using MySql.Data.MySqlClient;
+﻿using DGVPrinterHelper;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using DGVPrinterHelper;
+
 
 
 namespace SIMS3
@@ -18,6 +20,7 @@ namespace SIMS3
         public PrintStudent()
         {
             InitializeComponent();
+            
         }
 
         private void label9_Click(object sender, EventArgs e)
@@ -29,8 +32,13 @@ namespace SIMS3
         public void showData(MySqlCommand command)
         {
 
-            dataGridView_Student.DataSource = student.getStudentlist();
+            // 1. Change the query to ONLY select active students (IsActive = 1)
+            string studentQuery = "SELECT * FROM `student` WHERE `IsActive` = 1";
+            dataGridView_Student.DataSource = student.getStudentlist(new MySqlCommand(studentQuery));
 
+            // 2. Hide the IsActive column so it doesn't show up on the screen/printout
+            // Note: Make sure "dataGridView_Student" matches the actual name of your grid!
+            dataGridView_Student.Columns["IsActive"].Visible = false;
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
             dataGridView_Student.DataSource = student.getlist(command);
 
