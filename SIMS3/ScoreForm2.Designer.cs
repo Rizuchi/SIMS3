@@ -243,6 +243,7 @@
             comboBox_selectCourse.Name = "comboBox_selectCourse";
             comboBox_selectCourse.Size = new Size(226, 33);
             comboBox_selectCourse.TabIndex = 55;
+            comboBox_selectCourse.SelectedIndexChanged += comboBox_selectCourse_SelectedIndexChanged;
             // 
             // textBox_description
             // 

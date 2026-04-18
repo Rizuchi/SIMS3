@@ -197,7 +197,7 @@
             button_Print.FlatStyle = FlatStyle.Flat;
             button_Print.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Print.ForeColor = Color.White;
-            button_Print.Location = new Point(700, 14);
+            button_Print.Location = new Point(704, 37);
             button_Print.Margin = new Padding(2);
             button_Print.Name = "button_Print";
             button_Print.Size = new Size(180, 46);

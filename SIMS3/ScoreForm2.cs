@@ -20,7 +20,7 @@ namespace SIMS3
         {
             InitializeComponent();
 
-           
+
         }
 
         // function to show data in datagridview
@@ -28,9 +28,10 @@ namespace SIMS3
         {
 
             dataGridView_score1.DataSource = scoreClass.getlist(new MySqlCommand("SELECT * FROM `score`"));
+            dataGridView_score1.Columns["IsActive"].Visible = false;
 
-            dataGridView_score1.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
-            dataGridView_score1.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
+            dataGridView_score1.BackgroundColor = Color.FromArgb(34, 40, 64);
+            dataGridView_score1.GridColor = Color.FromArgb(50, 60, 90);
 
             // 2. The Header - Let's make it stand out with a lighter Slate Blue
             dataGridView_score1.EnableHeadersVisualStyles = false;
@@ -184,6 +185,11 @@ namespace SIMS3
         private void dataGridView_Score1_Click(object sender, EventArgs e)
         {
             textBox_ID.Text = dataGridView_score1.CurrentRow.Cells[0].Value.ToString();
+
+        }
+
+        private void comboBox_selectCourse_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }

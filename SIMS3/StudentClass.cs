@@ -12,16 +12,15 @@ namespace SIMS3
         // call connectdb
             DBConnect connect = new DBConnect();
 
-            // create a function to add a new students to the database
             public bool insertStudent(string fname, string mname, string lname, string suffix, DateTime bdate, string gender, string phone, string address, byte[] img)
             {
             MySqlCommand command = new MySqlCommand("INSERT INTO `student`(`FirstName`, `MiddleName`, `LastName`, `Suffix`, `Birthdate`, `Gender`, `Phone`, `Address`, `Photo`, `IsActive`) VALUES (@fn, @mn, @ln, @sfx, @bdt, @gnd, @phn, @adr, @img, 1)", connect.GetConnection());
 
             //@fn, @ln, @bd, @gd, @ph, @adr, @img
             command.Parameters.Add("@fn", MySqlDbType.VarChar).Value = fname;
-                command.Parameters.Add("@mn", MySqlDbType.VarChar).Value = mname;   // Added Middle Name
+                command.Parameters.Add("@mn", MySqlDbType.VarChar).Value = mname;   
                 command.Parameters.Add("@ln", MySqlDbType.VarChar).Value = lname;
-                command.Parameters.Add("@sfx", MySqlDbType.VarChar).Value = suffix; // Added Suffix
+                command.Parameters.Add("@sfx", MySqlDbType.VarChar).Value = suffix; 
                 command.Parameters.Add("@bdt", MySqlDbType.Date).Value = bdate;
                 command.Parameters.Add("@gnd", MySqlDbType.VarChar).Value = gender;
                 command.Parameters.Add("@phn", MySqlDbType.VarChar).Value = phone;
@@ -89,36 +88,36 @@ namespace SIMS3
 
             public DataTable searchStudent(string searchdata)
             {
-                // Fix: We combined the string properly, used backticks for columns, and used SELECT *
-                string query = "SELECT * FROM `student` WHERE CONCAT(`FirstName`, `MiddleName`, `LastName`, `Suffix`) LIKE '%" + searchdata + "%'";
+           
+             string query = "SELECT * FROM `student` WHERE CONCAT(`Student ID`, `FirstName`, `MiddleName`, `LastName`, `Suffix`) LIKE '%" + searchdata + "%'";
 
-                // Fix: Added () to GetConnection
-                MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
+              MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
 
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+              MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+              DataTable table = new DataTable();
+              adapter.Fill(table);
+
+              return table;
 
             }
 
 
-            //function for edit ayoko na 
+    
 
             // Method to update student data
             public bool updateStudent(int id, string fname, string mname, string lname, string suffix, DateTime bdate, string gender, string phone, string address, byte[] img)
             {
-                // Make sure column names match your phpMyAdmin exactly
+         
                 string query = "UPDATE `student` SET `FirstName`=@fn, `MiddleName`=@mn, `LastName`=@ln, `Suffix`=@sfx, `Birthdate`=@bd, `Gender`=@gd, `Phone`=@ph, `Address`=@adr, `Photo`=@img WHERE `Student ID`=@id";
 
                 MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
 
-                // Adding parameters to prevent SQL injection
+          
                 command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
                 command.Parameters.Add("@fn", MySqlDbType.VarChar).Value = fname;
-                command.Parameters.Add("@mn", MySqlDbType.VarChar).Value = mname; // Your modification
+                command.Parameters.Add("@mn", MySqlDbType.VarChar).Value = mname; 
                 command.Parameters.Add("@ln", MySqlDbType.VarChar).Value = lname;
-                command.Parameters.Add("@sfx", MySqlDbType.VarChar).Value = suffix; // Your modification
+                command.Parameters.Add("@sfx", MySqlDbType.VarChar).Value = suffix; 
                 command.Parameters.Add("@bd", MySqlDbType.Date).Value = bdate;
                 command.Parameters.Add("@gd", MySqlDbType.VarChar).Value = gender;
                 command.Parameters.Add("@ph", MySqlDbType.VarChar).Value = phone;
@@ -127,7 +126,7 @@ namespace SIMS3
 
                 connect.openConnect();
 
-                // Execute the query
+          
                 if (command.ExecuteNonQuery() == 1)
                 {
                     connect.closeConnect();
@@ -156,7 +155,7 @@ namespace SIMS3
         // Method to "soft delete" a student by setting IsDeleted to 1
         public bool softDeleteStudent(int id)
         {
-            // Updates the record to mark it as deleted instead of dropping the row
+
             MySqlCommand command = new MySqlCommand("UPDATE student SET IsActive = 0 WHERE `Student ID` = @id", connect.GetConnection());
 
             command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
@@ -174,6 +173,44 @@ namespace SIMS3
                 return false;
             }
         }
+
+        // New method to get students by course name
+        public DataTable getStudentsByCourse(string courseName)
+        {
+     
+            string query = "SELECT * FROM `student` WHERE `Student ID` IN (SELECT `Student ID` FROM `score` WHERE `CourseName` = @cName) AND `IsActive` = 1";
+
+            MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
+            command.Parameters.AddWithValue("@cName", courseName);
+
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+
+            return table;
+        }
+
+        // Method to get student count by course
+        public DataTable getStudentCountByCourse(string courseName)
+        {
+            string query = @"
+        SELECT 
+            SUM(CASE WHEN student.Gender = 'Male' THEN 1 ELSE 0 END) AS MaleCount,
+            SUM(CASE WHEN student.Gender = 'Female' THEN 1 ELSE 0 END) AS FemaleCount
+        FROM student 
+        INNER JOIN score ON student.`Student ID` = score.`Student ID`
+        WHERE score.CourseName = @cName AND student.IsActive = 1";
+
+            MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
+            command.Parameters.AddWithValue("@cName", courseName);
+
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+
+            return table;
+        }
+
     }
 }
 

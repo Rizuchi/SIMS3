@@ -24,12 +24,12 @@ namespace SIMS3
 
         private void button_search_Click(object sender, EventArgs e)
         {
-            // Loads the data from your database into the grid
+           
             dataGridView_Student.DataSource = student.searchStudent(textBox_search.Text);
 
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
 
-            // ⚠️ CHANGED TO [9] to account for Middle Name and Suffix pushing the Photo column over!
+        
             imageColumn = (DataGridViewImageColumn)dataGridView_Student.Columns[9];
 
             imageColumn.ImageLayout = DataGridViewImageCellLayout.Zoom;
@@ -37,19 +37,20 @@ namespace SIMS3
 
         public void showTable()
         {
-            // Loads the data from your database into the grid
+          
             dataGridView_Student.DataSource = student.getStudentlist(new MySqlCommand("SELECT * FROM `student`"));
+        
 
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
 
-            // ⚠️ CHANGED TO [9] to account for Middle Name and Suffix pushing the Photo column over!
+
             imageColumn = (DataGridViewImageColumn)dataGridView_Student.Columns[9];
 
             imageColumn.ImageLayout = DataGridViewImageCellLayout.Zoom;
             dataGridView_Student.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            dataGridView_Student.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
-            dataGridView_Student.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
+            dataGridView_Student.BackgroundColor = Color.FromArgb(34, 40, 64); 
+            dataGridView_Student.GridColor = Color.FromArgb(50, 60, 90);      
 
             // 2. The Header - Let's make it stand out with a lighter Slate Blue
             dataGridView_Student.EnableHeadersVisualStyles = false;
@@ -190,13 +191,13 @@ namespace SIMS3
             // 1: First Name
             textBox_fname.Text = dataGridView_Student.CurrentRow.Cells[1].Value.ToString();
 
-            // 2: Middle Name (Your modification!)
+            // 2: Middle Name
             textBox_Mname.Text = dataGridView_Student.CurrentRow.Cells[2].Value.ToString();
 
-            // 3: Last Name (Shifted due to Middle Name)
+            // 3: Last Name 
             textBox_LName.Text = dataGridView_Student.CurrentRow.Cells[3].Value.ToString();
 
-            // 4: Suffix (Your modification!)
+            // 4: Suffix 
             textBox_Sufix.Text = dataGridView_Student.CurrentRow.Cells[4].Value.ToString();
 
             // 5: Birthdate 
@@ -209,7 +210,7 @@ namespace SIMS3
             }
             else
             {
-                // It's good practice to make sure the female button gets checked if it's not male!
+              
                 radioButton_Female.Checked = true;
             }
 
@@ -225,9 +226,11 @@ namespace SIMS3
             pictureBox_Student.Image = Image.FromStream(ms);
         }
 
+
+        // This is the delete button event handler. It performs a soft delete by setting IsActive to 0.
         private void button_delete_Click(object sender, EventArgs e)
         {
-            // Assuming the text box for ID Number is named textBox_IDNumber
+
             if (textBox_ID.Text == "")
             {
                 MessageBox.Show("Please select a student to delete.", "Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -236,7 +239,7 @@ namespace SIMS3
 
             int id = Convert.ToInt32(textBox_ID.Text);
 
-            // Confirmation (VERY IMPORTANT)
+
             DialogResult result = MessageBox.Show(
                 "Are you sure you want to delete this student?",
                 "Confirm Delete",
@@ -246,13 +249,12 @@ namespace SIMS3
 
             if (result == DialogResult.Yes)
             {
-                // Assuming your student class instance is named 'student'
+
                 if (student.softDeleteStudent(id))
                 {
                     MessageBox.Show("Student deleted successfully!", "Delete Student", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     showTable();
 
-                    // Clear all fields shown in the UI
                     textBox_fname.Clear();
                     textBox_Mname.Clear();
                     textBox_LName.Clear();
@@ -261,19 +263,17 @@ namespace SIMS3
                     textBox_Address.Clear();
                     textBox_ID.Clear();
 
-                    // Reset Gender radio buttons
+
                     radioButton_Female.Checked = false;
                     radioButton_Male.Checked = false;
 
-                    // Reset Date of Birth to today
+
                     dateTimePicker1.Value = DateTime.Now;
 
-                    // Clear the picture box
+
                     pictureBox_Student.Image = null;
 
-                    // IMPORTANT: Call your method to refresh the DataGridView here 
-                    // so the deleted student disappears from the list.
-                    // Example: LoadStudentData(); 
+             
                 }
                 else
                 {

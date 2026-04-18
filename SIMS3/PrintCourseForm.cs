@@ -53,13 +53,11 @@ namespace SIMS3
         {
             string courseQuery = "SELECT * FROM `course` WHERE `IsActive` = 1";
             dataGridView_Course.DataSource = course.getCourse(new MySqlCommand(courseQuery));
-
-            // 2. Hide the IsActive column
-            // Note: Make sure "dataGridView_course" matches the actual name of your grid!
             dataGridView_Course.Columns["IsActive"].Visible = false;
+
             // 1. General Grid Appearance
-            dataGridView_Course.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
-            dataGridView_Course.GridColor = Color.FromArgb(50, 60, 90);       // Visible but soft grid lines
+            dataGridView_Course.BackgroundColor = Color.FromArgb(34, 40, 64); 
+            dataGridView_Course.GridColor = Color.FromArgb(50, 60, 90);      
 
             // 2. The Header - Let's make it stand out with a lighter Slate Blue
             dataGridView_Course.EnableHeadersVisualStyles = false;

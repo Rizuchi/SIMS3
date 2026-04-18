@@ -1,4 +1,5 @@
 ﻿using DGVPrinterHelper;
+using Microsoft.VisualBasic.Devices;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 
 
@@ -16,11 +18,12 @@ namespace SIMS3
     public partial class PrintStudent : Form
     {
         StudentClass student = new StudentClass();
+        CourseClass course = new CourseClass();
         DGVPrinter printer = new DGVPrinter();
         public PrintStudent()
         {
             InitializeComponent();
-            
+
         }
 
         private void label9_Click(object sender, EventArgs e)
@@ -80,35 +83,55 @@ namespace SIMS3
 
         private void PrintStudent_Load(object sender, EventArgs e)
         {
+
+           //populate the combobox with courses name
+            comboBox1.DataSource = course.getCourse(new MySqlCommand("SELECT * FROM `course`"));
+            comboBox1.DisplayMember = "CourseName";
+            comboBox1.ValueMember = "CourseName";
+        
+
             showData(new MySqlCommand("SELECT * FROM `student`"));
+
+            clearFields();
 
         }
 
-        //btnSearch forgot again to rename God help me 
+        //btnSearch forgot again to rename, but this is the search button for filtering the students based on the selected criteria
         private void button1_Click(object sender, EventArgs e)
         {
-            //check the radio button
-            string selectQuery;
-            if (radioButton_all.Checked)
-            {
-                selectQuery = "SELECT * FROM `student`";
+            string query = "SELECT * FROM `student` WHERE `IsActive` = 1";
+  
+            if (radioButton_Male.Checked)
+            {              
+               query += " AND `Gender` = 'Male'";
             }
-            else if (radioButton_Male.Checked)
-            {
-                selectQuery = "SELECT * FROM `student` WHERE `Gender`='Male'";
+            else if (!radioButton_all.Checked)
+            {        
+                query += " AND `Gender` = 'Female'";
             }
-            else
+        
+            if (comboBox1.Text != "")
             {
-                selectQuery = "SELECT * FROM `student` WHERE `Gender`='Female'";
+                query += " AND `Student ID` IN (SELECT `Student ID` FROM `score` WHERE `CourseName` = @cName)";
             }
-            showData(new MySqlCommand(selectQuery));
+
+            MySqlCommand command = new MySqlCommand(query);
+
+            if (comboBox1.Text != "")
+            {
+                command.Parameters.AddWithValue("@cName", comboBox1.Text);
+            }
+
+            showData(command);
+
+            clearFields();
 
         }
 
         private void button_Print_Click(object sender, EventArgs e)
         {
             //We need DGVprinter helper for print pdf file
-            printer.Title = "SIMS Printer";
+            printer.Title = "SIMS Student List";
             printer.SubTitle = string.Format("Date: {0}", DateTime.Now.Date);
             printer.SubTitleFormatFlags = StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
             printer.PageNumbers = true;
@@ -125,5 +148,14 @@ namespace SIMS3
         {
 
         }
+
+        private void clearFields()
+        {
+            comboBox1.SelectedIndex = -1;
+            radioButton_all.Checked = false;
+            radioButton_Male.Checked = false;
+            radioButton_Female.Checked = false;
+        }
+
     }
 }

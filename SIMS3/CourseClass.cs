@@ -10,16 +10,16 @@ namespace SIMS3
     {
         DBConnect connect = new DBConnect();
 
-        // Create a function to insert course
+
         public bool insertCourse(string cName, double hr, double units, string dept, string desc)
         {
-            // The SQL query now includes CourseUnits and Department
+
             MySqlCommand command = new MySqlCommand("INSERT INTO `course`(`CourseName`, `CourseHour`, `CourseUnits`, `Department`, `Description`) VALUES (@cn, @ch, @cu, @dept, @desc)", connect.GetConnection());
 
             command.Parameters.Add("@cn", MySqlDbType.VarChar).Value = cName;
             command.Parameters.Add("@ch", MySqlDbType.Int32).Value = hr;
-            command.Parameters.Add("@cu", MySqlDbType.Int32).Value = units;    // New: Units
-            command.Parameters.Add("@dept", MySqlDbType.VarChar).Value = dept; // New: Department
+            command.Parameters.Add("@cu", MySqlDbType.Int32).Value = units;    
+            command.Parameters.Add("@dept", MySqlDbType.VarChar).Value = dept; 
             command.Parameters.Add("@desc", MySqlDbType.Text).Value = desc;
 
             connect.openConnect();
@@ -99,13 +99,13 @@ namespace SIMS3
             }
         }
 
+        //seach method
         public DataTable SearchCourse(string searchdata)
         {
             string query = "SELECT * FROM `course` WHERE CONCAT_WS(' ', `CourseName`, `Department`, `Description`) LIKE @search";
 
             MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
 
-            // 2. Safely bind the search data to the @search parameter
             command.Parameters.AddWithValue("@search", "%" + searchdata + "%");
 
             MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -116,7 +116,10 @@ namespace SIMS3
 
         }
 
+
         
+       
+
     }
 }
 

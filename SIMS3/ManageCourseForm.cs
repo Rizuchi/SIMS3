@@ -128,7 +128,7 @@ namespace SIMS3
             dataGridView_Course.DataSource = course.SearchCourse(textBox_search.Text);
         }
 
-        private void dataGridView_Course_Click(object sender, EventArgs e)
+        private void dataGridview_Manage_Clcik(object sender, EventArgs e)
         {
             // Safety check: Make sure a row is actually selected before trying to read it
             if (dataGridView_Course.CurrentRow == null) return;
@@ -154,9 +154,7 @@ namespace SIMS3
             // 5: Description -> textBox_Description
             textBox_Description.Text = dataGridView_Course.CurrentRow.Cells[5].Value.ToString();
         }
-
-       
-     }
+    }
 }
 
 

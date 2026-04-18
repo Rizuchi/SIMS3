@@ -279,6 +279,7 @@
             dataGridView_Course.RowTemplate.Height = 80;
             dataGridView_Course.Size = new Size(899, 248);
             dataGridView_Course.TabIndex = 25;
+            dataGridView_Course.Click += dataGridview_Manage_Clcik;
             // 
             // panel10
             // 

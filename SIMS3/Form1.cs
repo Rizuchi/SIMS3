@@ -1,12 +1,17 @@
+using Microsoft.VisualBasic.Devices;
+using MySql.Data.MySqlClient;
+using System.Data;
 using System.Reflection;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SIMS3
 {
     public partial class Form1 : Form
     {
-
-
+        CourseClass course = new CourseClass();
         StudentClass student = new StudentClass();
+
         public Form1()
         {
             InitializeComponent();
@@ -18,8 +23,15 @@ namespace SIMS3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            studentCount();
 
+            // populate the combobox with courses name
+            comboBox_class.DataSource = course.getCourse(new MySqlCommand("SELECT * FROM `course`"));
+            comboBox_class.DisplayMember = "CourseName";
+            comboBox_class.ValueMember = "CourseName";
+
+            comboBox_class.SelectedIndex = -1; 
+
+            studentCount();
         }
 
         private void studentCount()
@@ -71,7 +83,7 @@ namespace SIMS3
 
         private void btnSetup_Click_1(object sender, EventArgs e)
         {
-            ShowSubMenu(pnlStudent);
+            ShowSubMenu(pnlManage);
         }
 
         private void label_totalstudent_Click(object sender, EventArgs e)
@@ -94,8 +106,6 @@ namespace SIMS3
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
 
-            // IMPORTANT: You need to add the child form to a Panel on your main form.
-            // Replace 'panelMain' with the actual name of the empty Panel in the middle of your design.
             panel_main.Controls.Add(childForm);
             panel_main.Tag = childForm;
             childForm.BringToFront();
@@ -149,6 +159,39 @@ namespace SIMS3
         private void btnPrint3_Click(object sender, EventArgs e)
         {
             openChildForm(new PrintScoreForm());
+        }
+
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            openChildForm(new AccountCreateForm());
+        }
+
+        // This event handler is triggered when the selected index of the comboBox_class changes
+        private void comboBox_class_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+      
+            if (comboBox_class.SelectedValue == null || comboBox_class.SelectedIndex == -1) return;
+
+            string courseName = comboBox_class.SelectedValue.ToString();
+
+
+            DataTable table = student.getStudentCountByCourse(courseName);
+
+     
+            if (table.Rows.Count > 0)
+            {
+                string maleCount = table.Rows[0]["MaleCount"].ToString();
+                string femaleCount = table.Rows[0]["FemaleCount"].ToString();
+
+
+                if (string.IsNullOrEmpty(maleCount)) maleCount = "0";
+                if (string.IsNullOrEmpty(femaleCount)) femaleCount = "0";
+
+                label_enrolledmale.Text = "Male: " + maleCount;
+                label_enrolledfemale.Text = "Female: " + femaleCount;
+            }
+
         }
     }
 }

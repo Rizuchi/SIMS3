@@ -20,9 +20,9 @@ namespace SIMS3
         private void button_AddStudent_Click(object sender, EventArgs e)
         {
             string fname = textBox_fname.Text;
-            string mname = textBox_Mname.Text;   // Grabbing the new Middle Name
+            string mname = textBox_Mname.Text;   
             string lname = textBox_LName.Text;
-            string suffix = textBox_Sufix.Text; // Grabbing the new Suffix
+            string suffix = textBox_Sufix.Text; 
             DateTime bdate = dateTimePicker1.Value;
             string phone = textBox_Number.Text;
             string address = textBox_Address.Text;
@@ -31,15 +31,15 @@ namespace SIMS3
             if (pictureBox_Student.Image == null)
             {
                 MessageBox.Show("Please upload a student photo before adding.", "Missing Photo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // This 'return' is the most important part; it exits the method immediately
+                return; 
             }
-            // to get photo from picture box
+ 
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
             {
                 pictureBox_Student.Image.Save(ms, pictureBox_Student.Image.RawFormat);
                 byte[] img = ms.ToArray();
 
-                // we need to check student age between 10 and 100
+               
                 int born_year = dateTimePicker1.Value.Year;
                 int this_year = DateTime.Now.Year;
 
@@ -49,7 +49,7 @@ namespace SIMS3
                 }
                 else if (verify())
                 {
-                    // Fixed the syntax error from the video here by removing the broken 'try'
+                  
                     if (student.insertStudent(fname, mname, lname, suffix, bdate, gender, phone, address, img))
                     {
                         showTable();
@@ -76,14 +76,14 @@ namespace SIMS3
             textBox_Number.Clear();
             textBox_Address.Clear();
 
-            // Clears the radio buttons (unchecks both)
+     
             radioButton_Male.Checked = false;
-            radioButton_Female.Checked = false; // Double-check this name matches your properties!
+            radioButton_Female.Checked = false; 
 
-            // Clears the photo
+    
             pictureBox_Student.Image = null;
 
-            // Resets the date picker to today's date
+          
             dateTimePicker1.Value = DateTime.Now;
         }
 
@@ -117,6 +117,7 @@ namespace SIMS3
         {
             // Loads the data from your database into the grid
             dataGridView_Student.DataSource = student.getStudentlist(new MySqlCommand("SELECT * FROM `student`"));
+            dataGridView_Student.Columns["IsActive"].Visible = false;
 
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
 
@@ -126,25 +127,25 @@ namespace SIMS3
             imageColumn.ImageLayout = DataGridViewImageCellLayout.Zoom;
             dataGridView_Student.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            dataGridView_Student.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
-            dataGridView_Student.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
+            dataGridView_Student.BackgroundColor = Color.FromArgb(34, 40, 64);
+            dataGridView_Student.GridColor = Color.FromArgb(50, 60, 90);     
 
             // 2. The Header - Let's make it stand out with a lighter Slate Blue
             dataGridView_Student.EnableHeadersVisualStyles = false;
-            dataGridView_Student.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); // Light Slate Blue
+            dataGridView_Student.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); 
             dataGridView_Student.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView_Student.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dataGridView_Student.ColumnHeadersHeight = 40;
 
             // 3. The Rows - Lighter Navy so the text is easier to read
-            dataGridView_Student.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); // Lighter navy row
-            dataGridView_Student.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); // Off-white text (easier on eyes)
+            dataGridView_Student.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); 
+            dataGridView_Student.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); 
 
             // 4. Alternating Rows - This adds "Zebra Stripes" to make it look much more modern
             dataGridView_Student.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(37, 43, 68);
 
             // 5. Selection Color - A nice highlight color
-            dataGridView_Student.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); // Bright selection blue
+            dataGridView_Student.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); 
             dataGridView_Student.DefaultCellStyle.SelectionForeColor = Color.White;
 
             // Optional: Hide the little row header arrow column on the far left to make it cleaner

@@ -33,9 +33,8 @@
             btnHome = new Button();
             panel8 = new Panel();
             btnExit = new Button();
+            panel12 = new Panel();
             pnlManage = new Panel();
-            button1 = new Button();
-            btnResetPass = new Button();
             btnCreate = new Button();
             panel7 = new Panel();
             btnSetup = new Button();
@@ -69,13 +68,13 @@
             panel_main = new Panel();
             panel_cover = new Panel();
             panel1 = new Panel();
-            label13 = new Label();
-            label12 = new Label();
-            label11 = new Label();
-            textBox1 = new TextBox();
+            label8 = new Label();
+            label_totalstudent = new Label();
+            comboBox_class = new ComboBox();
+            label_enrolledmale = new Label();
+            label_enrolledfemale = new Label();
             label_female = new Label();
             label_male = new Label();
-            label_totalstudent = new Label();
             panel10 = new Panel();
             pictureBox3 = new PictureBox();
             label7 = new Label();
@@ -106,6 +105,7 @@
             pnlMenu.Controls.Add(btnHome);
             pnlMenu.Controls.Add(panel8);
             pnlMenu.Controls.Add(btnExit);
+            pnlMenu.Controls.Add(panel12);
             pnlMenu.Controls.Add(pnlManage);
             pnlMenu.Controls.Add(panel7);
             pnlMenu.Controls.Add(btnSetup);
@@ -136,7 +136,7 @@
             btnHome.ForeColor = SystemColors.ButtonHighlight;
             btnHome.Image = (Image)resources.GetObject("btnHome.Image");
             btnHome.ImageAlign = ContentAlignment.MiddleLeft;
-            btnHome.Location = new Point(0, 1348);
+            btnHome.Location = new Point(0, 1228);
             btnHome.Name = "btnHome";
             btnHome.Padding = new Padding(8, 0, 40, 0);
             btnHome.Size = new Size(238, 65);
@@ -147,7 +147,7 @@
             // panel8
             // 
             panel8.Dock = DockStyle.Top;
-            panel8.Location = new Point(0, 1319);
+            panel8.Location = new Point(0, 1199);
             panel8.Name = "panel8";
             panel8.Size = new Size(238, 29);
             panel8.TabIndex = 29;
@@ -161,7 +161,7 @@
             btnExit.ForeColor = SystemColors.ButtonHighlight;
             btnExit.Image = (Image)resources.GetObject("btnExit.Image");
             btnExit.ImageAlign = ContentAlignment.MiddleLeft;
-            btnExit.Location = new Point(0, 1254);
+            btnExit.Location = new Point(0, 1134);
             btnExit.Name = "btnExit";
             btnExit.Padding = new Padding(10, 0, 59, 0);
             btnExit.Size = new Size(238, 65);
@@ -169,51 +169,23 @@
             btnExit.Text = "Exit";
             btnExit.UseVisualStyleBackColor = true;
             // 
+            // panel12
+            // 
+            panel12.Dock = DockStyle.Top;
+            panel12.Location = new Point(0, 1105);
+            panel12.Name = "panel12";
+            panel12.Size = new Size(238, 29);
+            panel12.TabIndex = 30;
+            // 
             // pnlManage
             // 
             pnlManage.BackColor = Color.FromArgb(56, 71, 160);
-            pnlManage.Controls.Add(button1);
-            pnlManage.Controls.Add(btnResetPass);
             pnlManage.Controls.Add(btnCreate);
             pnlManage.Dock = DockStyle.Top;
-            pnlManage.Location = new Point(0, 1069);
+            pnlManage.Location = new Point(0, 1040);
             pnlManage.Name = "pnlManage";
-            pnlManage.Size = new Size(238, 185);
+            pnlManage.Size = new Size(238, 65);
             pnlManage.TabIndex = 20;
-            // 
-            // button1
-            // 
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            button1.ForeColor = SystemColors.ButtonHighlight;
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.ImageAlign = ContentAlignment.MiddleLeft;
-            button1.Location = new Point(0, 125);
-            button1.Name = "button1";
-            button1.Padding = new Padding(21, 0, 21, 0);
-            button1.Size = new Size(259, 57);
-            button1.TabIndex = 5;
-            button1.Text = "Disable/Enable";
-            button1.TextAlign = ContentAlignment.MiddleRight;
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // btnResetPass
-            // 
-            btnResetPass.FlatAppearance.BorderSize = 0;
-            btnResetPass.FlatStyle = FlatStyle.Flat;
-            btnResetPass.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnResetPass.ForeColor = SystemColors.ButtonHighlight;
-            btnResetPass.Image = (Image)resources.GetObject("btnResetPass.Image");
-            btnResetPass.ImageAlign = ContentAlignment.MiddleLeft;
-            btnResetPass.Location = new Point(0, 65);
-            btnResetPass.Name = "btnResetPass";
-            btnResetPass.Padding = new Padding(21, 0, 15, 0);
-            btnResetPass.Size = new Size(259, 57);
-            btnResetPass.TabIndex = 4;
-            btnResetPass.Text = "Reset Passowrd";
-            btnResetPass.TextAlign = ContentAlignment.MiddleRight;
-            btnResetPass.UseVisualStyleBackColor = true;
             // 
             // btnCreate
             // 
@@ -225,17 +197,18 @@
             btnCreate.ImageAlign = ContentAlignment.MiddleLeft;
             btnCreate.Location = new Point(0, 3);
             btnCreate.Name = "btnCreate";
-            btnCreate.Padding = new Padding(21, 0, 21, 0);
+            btnCreate.Padding = new Padding(15, 0, 21, 0);
             btnCreate.Size = new Size(259, 57);
             btnCreate.TabIndex = 3;
-            btnCreate.Text = "Create Account";
+            btnCreate.Text = "Manage Account";
             btnCreate.TextAlign = ContentAlignment.MiddleRight;
             btnCreate.UseVisualStyleBackColor = true;
+            btnCreate.Click += btnCreate_Click;
             // 
             // panel7
             // 
-            panel7.Dock = DockStyle.Top;
-            panel7.Location = new Point(0, 1040);
+            panel7.Dock = DockStyle.Bottom;
+            panel7.Location = new Point(0, 1293);
             panel7.Name = "panel7";
             panel7.Size = new Size(238, 29);
             panel7.TabIndex = 27;
@@ -251,10 +224,10 @@
             btnSetup.ImageAlign = ContentAlignment.MiddleLeft;
             btnSetup.Location = new Point(0, 975);
             btnSetup.Name = "btnSetup";
-            btnSetup.Padding = new Padding(10, 0, 10, 0);
+            btnSetup.Padding = new Padding(10, 0, 0, 0);
             btnSetup.Size = new Size(238, 65);
             btnSetup.TabIndex = 19;
-            btnSetup.Text = "Account Setup";
+            btnSetup.Text = "Create Account ";
             btnSetup.TextAlign = ContentAlignment.MiddleRight;
             btnSetup.UseVisualStyleBackColor = true;
             btnSetup.Click += btnSetup_Click_1;
@@ -548,7 +521,7 @@
             panel3.Controls.Add(label4);
             panel3.Controls.Add(pictureBox1);
             panel3.Dock = DockStyle.Bottom;
-            panel3.Location = new Point(0, 1413);
+            panel3.Location = new Point(0, 1322);
             panel3.Name = "panel3";
             panel3.Size = new Size(238, 86);
             panel3.TabIndex = 1;
@@ -650,63 +623,74 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(25, 33, 62);
-            panel1.Controls.Add(label13);
-            panel1.Controls.Add(label12);
-            panel1.Controls.Add(label11);
-            panel1.Controls.Add(textBox1);
+            panel1.Controls.Add(label8);
+            panel1.Controls.Add(label_totalstudent);
+            panel1.Controls.Add(comboBox_class);
+            panel1.Controls.Add(label_enrolledmale);
+            panel1.Controls.Add(label_enrolledfemale);
             panel1.Controls.Add(label_female);
             panel1.Controls.Add(label_male);
-            panel1.Controls.Add(label_totalstudent);
             panel1.Dock = DockStyle.Bottom;
             panel1.Location = new Point(0, 644);
             panel1.Name = "panel1";
             panel1.Size = new Size(977, 86);
             panel1.TabIndex = 20;
             // 
-            // label13
+            // label8
             // 
-            label13.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            label13.AutoSize = true;
-            label13.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label13.ForeColor = Color.White;
-            label13.Location = new Point(743, 49);
-            label13.Name = "label13";
-            label13.Size = new Size(52, 23);
-            label13.TabIndex = 12;
-            label13.Text = "Male:";
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.ForeColor = Color.White;
+            label8.Location = new Point(662, 15);
+            label8.Name = "label8";
+            label8.Size = new Size(127, 28);
+            label8.TabIndex = 16;
+            label8.Text = "Select Class:";
             // 
-            // label12
+            // label_totalstudent
             // 
-            label12.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            label12.AutoSize = true;
-            label12.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.ForeColor = Color.White;
-            label12.Location = new Point(863, 49);
-            label12.Name = "label12";
-            label12.Size = new Size(69, 23);
-            label12.TabIndex = 13;
-            label12.Text = "Female:";
+            label_totalstudent.AutoSize = true;
+            label_totalstudent.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_totalstudent.ForeColor = Color.White;
+            label_totalstudent.Location = new Point(64, 16);
+            label_totalstudent.Name = "label_totalstudent";
+            label_totalstudent.Size = new Size(144, 28);
+            label_totalstudent.TabIndex = 15;
+            label_totalstudent.Text = "Total Student:";
             // 
-            // label11
+            // comboBox_class
             // 
-            label11.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.ForeColor = Color.White;
-            label11.Location = new Point(677, 15);
-            label11.Name = "label11";
-            label11.Size = new Size(102, 23);
-            label11.TabIndex = 10;
-            label11.Text = "Select Class:";
+            comboBox_class.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comboBox_class.FormattingEnabled = true;
+            comboBox_class.Location = new Point(795, 10);
+            comboBox_class.Name = "comboBox_class";
+            comboBox_class.Size = new Size(151, 33);
+            comboBox_class.TabIndex = 14;
+            comboBox_class.SelectedIndexChanged += comboBox_class_SelectedIndexChanged;
             // 
-            // textBox1
+            // label_enrolledmale
             // 
-            textBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBox1.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(785, 10);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(169, 31);
-            textBox1.TabIndex = 11;
+            label_enrolledmale.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            label_enrolledmale.AutoSize = true;
+            label_enrolledmale.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_enrolledmale.ForeColor = Color.White;
+            label_enrolledmale.Location = new Point(737, 49);
+            label_enrolledmale.Name = "label_enrolledmale";
+            label_enrolledmale.Size = new Size(52, 23);
+            label_enrolledmale.TabIndex = 12;
+            label_enrolledmale.Text = "Male:";
+            // 
+            // label_enrolledfemale
+            // 
+            label_enrolledfemale.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            label_enrolledfemale.AutoSize = true;
+            label_enrolledfemale.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_enrolledfemale.ForeColor = Color.White;
+            label_enrolledfemale.Location = new Point(836, 49);
+            label_enrolledfemale.Name = "label_enrolledfemale";
+            label_enrolledfemale.Size = new Size(69, 23);
+            label_enrolledfemale.TabIndex = 13;
+            label_enrolledfemale.Text = "Female:";
             // 
             // label_female
             // 
@@ -731,19 +715,6 @@
             label_male.Size = new Size(52, 23);
             label_male.TabIndex = 8;
             label_male.Text = "Male:";
-            // 
-            // label_totalstudent
-            // 
-            label_totalstudent.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label_totalstudent.AutoSize = true;
-            label_totalstudent.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_totalstudent.ForeColor = Color.White;
-            label_totalstudent.Location = new Point(35, 10);
-            label_totalstudent.Name = "label_totalstudent";
-            label_totalstudent.Size = new Size(122, 23);
-            label_totalstudent.TabIndex = 7;
-            label_totalstudent.Text = "Total Students:";
-            label_totalstudent.Click += label_totalstudent_Click;
             // 
             // panel10
             // 
@@ -774,7 +745,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.White;
-            label7.Location = new Point(123, 45);
+            label7.Location = new Point(129, 48);
             label7.Name = "label7";
             label7.Size = new Size(72, 28);
             label7.TabIndex = 2;
@@ -785,7 +756,7 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.White;
-            label6.Location = new Point(58, 45);
+            label6.Location = new Point(64, 48);
             label6.Name = "label6";
             label6.Size = new Size(59, 28);
             label6.TabIndex = 1;
@@ -794,13 +765,13 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.White;
-            label5.Location = new Point(58, 12);
+            label5.Location = new Point(64, 10);
             label5.Name = "label5";
-            label5.Size = new Size(99, 28);
+            label5.Size = new Size(217, 38);
             label5.TabIndex = 0;
-            label5.Text = "Welcome";
+            label5.Text = "Welcome Back!";
             // 
             // pictureBox4
             // 
@@ -821,6 +792,7 @@
             ClientSize = new Size(1236, 730);
             Controls.Add(panel_main);
             Controls.Add(pnlMenu);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -854,8 +826,6 @@
         private Panel panel8;
         private Button btnExit;
         private Panel pnlManage;
-        private Button button1;
-        private Button btnResetPass;
         private Button btnCreate;
         private Panel panel7;
         private Button btnSetup;
@@ -889,18 +859,19 @@
         private Panel panel_main;
         private Panel panel_cover;
         private Panel panel1;
-        private Label label12;
-        private Label label13;
-        private TextBox textBox1;
-        private Label label11;
+        private Label label_enrolledfemale;
+        private Label label_enrolledmale;
         private Label label_female;
         private Label label_male;
-        private Label label_totalstudent;
         private Panel panel10;
         private PictureBox pictureBox3;
         private Label label7;
         private Label label6;
         private Label label5;
         private PictureBox pictureBox4;
+        private Panel panel12;
+        private ComboBox comboBox_class;
+        private Label label_totalstudent;
+        private Label label8;
     }
 }

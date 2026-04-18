@@ -49,11 +49,12 @@ namespace SIMS3
         private void showScore()
         {
             string query = "SELECT score.`Student ID` AS `Student ID`, student.FirstName AS `First Name`, student.LastName AS `Last Name`, score.CourseName AS `CourseName`, score.Score, score.Description FROM score INNER JOIN student ON score.`Student ID` = student.`Student ID`";
-
+         
             dataGridView_Score.DataSource = score.getlist(new MySqlCommand(query));
 
-            dataGridView_Score.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
-            dataGridView_Score.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
+
+            dataGridView_Score.BackgroundColor = Color.FromArgb(34, 40, 64); 
+            dataGridView_Score.GridColor = Color.FromArgb(50, 60, 90);      
 
             // 2. The Header - Let's make it stand out with a lighter Slate Blue
             dataGridView_Score.EnableHeadersVisualStyles = false;
