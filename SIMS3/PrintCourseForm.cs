@@ -24,15 +24,18 @@ namespace SIMS3
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dataGridView_Course.DataSource = course.SearchCourse(textBox_search.Text);
+            dataGridView_Course.DataSource = course.SearchCourse(textBox_search.Text, 1);
         }
 
         private void button_Print_Click(object sender, EventArgs e)
         {
-            //We need DGVprinter helper for print pdf file
             printer.Title = "SIMS Course List";
-            printer.SubTitle = string.Format("Date: {0}", DateTime.Now.Date);
+
+          
+            printer.SubTitle = string.Format("Date: {0}", DateTime.Now.ToString("MMMM dd, yyyy"));
             printer.SubTitleFormatFlags = StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
+            printer.RowHeight = DGVPrinter.RowHeightSetting.CellHeight;
+
             printer.PageNumbers = true;
             printer.PageNumberInHeader = false;
             printer.PorportionalColumns = true;
@@ -40,6 +43,10 @@ namespace SIMS3
             printer.Footer = "SIMS";
             printer.FooterSpacing = 15;
             printer.printDocument.DefaultPageSettings.Landscape = true;
+
+           
+            printer.printDocument.DefaultPageSettings.Margins = new System.Drawing.Printing.Margins(30, 30, 30, 30);
+
             printer.PrintDataGridView(dataGridView_Course);
         }
 
@@ -51,9 +58,8 @@ namespace SIMS3
 
         private void ApplyGridStyle()
         {
-            string courseQuery = "SELECT * FROM `course` WHERE `IsActive` = 1";
-            dataGridView_Course.DataSource = course.getCourse(new MySqlCommand(courseQuery));
-            dataGridView_Course.Columns["IsActive"].Visible = false;
+            string courseQuery = "SELECT * FROM `course` WHERE `IsActive` = 1 ORDER BY `Course ID` DESC";
+dataGridView_Course.DataSource = course.getCourse(new MySqlCommand(courseQuery));
 
             // 1. General Grid Appearance
             dataGridView_Course.BackgroundColor = Color.FromArgb(34, 40, 64); 

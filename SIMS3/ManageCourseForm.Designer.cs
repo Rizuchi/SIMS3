@@ -58,6 +58,9 @@
             label4 = new Label();
             button_Delete = new Button();
             panel3 = new Panel();
+            radioButton_All = new RadioButton();
+            radioButton_Active = new RadioButton();
+            radioButton_Deleted = new RadioButton();
             panel_holder3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_Course).BeginInit();
             panel8.SuspendLayout();
@@ -106,6 +109,7 @@
             textBox_units.Name = "textBox_units";
             textBox_units.Size = new Size(162, 31);
             textBox_units.TabIndex = 52;
+            textBox_units.KeyPress += textBox_units_KeyPress;
             // 
             // label2
             // 
@@ -177,6 +181,7 @@
             textBox_Hourse.Name = "textBox_Hourse";
             textBox_Hourse.Size = new Size(162, 31);
             textBox_Hourse.TabIndex = 47;
+            textBox_Hourse.KeyPress += textBox_Hourse_KeyPress;
             // 
             // textBox_Subject
             // 
@@ -201,9 +206,9 @@
             label11.Location = new Point(253, 33);
             label11.Margin = new Padding(2, 0, 2, 0);
             label11.Name = "label11";
-            label11.Size = new Size(56, 23);
+            label11.Size = new Size(114, 23);
             label11.TabIndex = 46;
-            label11.Text = "Hours";
+            label11.Text = "Course Hours";
             // 
             // label1
             // 
@@ -215,9 +220,9 @@
             label1.Location = new Point(36, 33);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(117, 23);
+            label1.Size = new Size(114, 23);
             label1.TabIndex = 44;
-            label1.Text = "Subject Name";
+            label1.Text = "Course Name";
             // 
             // button_Update
             // 
@@ -321,6 +326,9 @@
             // 
             // panel5
             // 
+            panel5.Controls.Add(radioButton_All);
+            panel5.Controls.Add(radioButton_Active);
+            panel5.Controls.Add(radioButton_Deleted);
             panel5.Controls.Add(button_search);
             panel5.Controls.Add(textBox_search);
             panel5.Dock = DockStyle.Top;
@@ -432,9 +440,9 @@
             label4.Location = new Point(688, 33);
             label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(85, 23);
+            label4.Size = new Size(108, 23);
             label4.TabIndex = 56;
-            label4.Text = "Course ID";
+            label4.Text = "Course Code";
             // 
             // button_Delete
             // 
@@ -463,6 +471,45 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(959, 88);
             panel3.TabIndex = 31;
+            // 
+            // radioButton_All
+            // 
+            radioButton_All.AutoSize = true;
+            radioButton_All.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_All.ForeColor = Color.White;
+            radioButton_All.Location = new Point(217, 21);
+            radioButton_All.Name = "radioButton_All";
+            radioButton_All.Size = new Size(50, 27);
+            radioButton_All.TabIndex = 53;
+            radioButton_All.TabStop = true;
+            radioButton_All.Text = "All";
+            radioButton_All.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Active
+            // 
+            radioButton_Active.AutoSize = true;
+            radioButton_Active.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_Active.ForeColor = Color.White;
+            radioButton_Active.Location = new Point(114, 21);
+            radioButton_Active.Name = "radioButton_Active";
+            radioButton_Active.Size = new Size(78, 27);
+            radioButton_Active.TabIndex = 52;
+            radioButton_Active.TabStop = true;
+            radioButton_Active.Text = "Active";
+            radioButton_Active.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Deleted
+            // 
+            radioButton_Deleted.AutoSize = true;
+            radioButton_Deleted.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_Deleted.ForeColor = Color.White;
+            radioButton_Deleted.Location = new Point(2, 21);
+            radioButton_Deleted.Name = "radioButton_Deleted";
+            radioButton_Deleted.Size = new Size(90, 27);
+            radioButton_Deleted.TabIndex = 51;
+            radioButton_Deleted.TabStop = true;
+            radioButton_Deleted.Text = "Deleted";
+            radioButton_Deleted.UseVisualStyleBackColor = true;
             // 
             // ManageCourseForm
             // 
@@ -530,5 +577,8 @@
         private Button button_Delete;
         private Button button_search;
         private TextBox textBox_search;
+        private RadioButton radioButton_All;
+        private RadioButton radioButton_Active;
+        private RadioButton radioButton_Deleted;
     }
 }

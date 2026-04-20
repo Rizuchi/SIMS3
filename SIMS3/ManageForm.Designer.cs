@@ -69,6 +69,9 @@
             button_delete = new Button();
             button_Clear = new Button();
             panel4 = new Panel();
+            radioButton_All = new RadioButton();
+            radioButton_Active = new RadioButton();
+            radioButton_Deleted = new RadioButton();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
             panel8.SuspendLayout();
@@ -100,6 +103,9 @@
             // 
             // panel5
             // 
+            panel5.Controls.Add(radioButton_All);
+            panel5.Controls.Add(radioButton_Active);
+            panel5.Controls.Add(radioButton_Deleted);
             panel5.Controls.Add(button_search);
             panel5.Controls.Add(textBox_search);
             panel5.Dock = DockStyle.Top;
@@ -284,7 +290,7 @@
             radioButton_Male.BackColor = Color.FromArgb(26, 34, 52);
             radioButton_Male.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             radioButton_Male.ForeColor = Color.White;
-            radioButton_Male.Location = new Point(721, 136);
+            radioButton_Male.Location = new Point(721, 137);
             radioButton_Male.Margin = new Padding(2);
             radioButton_Male.Name = "radioButton_Male";
             radioButton_Male.Size = new Size(70, 27);
@@ -483,7 +489,7 @@
             // 
             pictureBox_Student.Anchor = AnchorStyles.Top;
             pictureBox_Student.BackColor = Color.FromArgb(30, 49, 90);
-            pictureBox_Student.Location = new Point(399, 404);
+            pictureBox_Student.Location = new Point(389, 404);
             pictureBox_Student.Margin = new Padding(2);
             pictureBox_Student.Name = "pictureBox_Student";
             pictureBox_Student.Size = new Size(100, 100);
@@ -497,7 +503,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.White;
-            label7.Location = new Point(361, 316);
+            label7.Location = new Point(349, 316);
             label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
             label7.Size = new Size(180, 31);
@@ -512,7 +518,7 @@
             button_Upload.FlatStyle = FlatStyle.Flat;
             button_Upload.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Upload.ForeColor = Color.White;
-            button_Upload.Location = new Point(380, 508);
+            button_Upload.Location = new Point(372, 508);
             button_Upload.Margin = new Padding(2);
             button_Upload.Name = "button_Upload";
             button_Upload.Size = new Size(135, 34);
@@ -572,7 +578,7 @@
             textBox_ID.BorderStyle = BorderStyle.FixedSingle;
             textBox_ID.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_ID.ForeColor = Color.White;
-            textBox_ID.Location = new Point(361, 217);
+            textBox_ID.Location = new Point(361, 215);
             textBox_ID.Margin = new Padding(2, 3, 2, 3);
             textBox_ID.Name = "textBox_ID";
             textBox_ID.Size = new Size(88, 31);
@@ -633,6 +639,45 @@
             panel4.Name = "panel4";
             panel4.Size = new Size(878, 30);
             panel4.TabIndex = 35;
+            // 
+            // radioButton_All
+            // 
+            radioButton_All.AutoSize = true;
+            radioButton_All.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_All.ForeColor = Color.White;
+            radioButton_All.Location = new Point(246, 16);
+            radioButton_All.Name = "radioButton_All";
+            radioButton_All.Size = new Size(50, 27);
+            radioButton_All.TabIndex = 50;
+            radioButton_All.TabStop = true;
+            radioButton_All.Text = "All";
+            radioButton_All.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Active
+            // 
+            radioButton_Active.AutoSize = true;
+            radioButton_Active.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_Active.ForeColor = Color.White;
+            radioButton_Active.Location = new Point(143, 16);
+            radioButton_Active.Name = "radioButton_Active";
+            radioButton_Active.Size = new Size(78, 27);
+            radioButton_Active.TabIndex = 49;
+            radioButton_Active.TabStop = true;
+            radioButton_Active.Text = "Active";
+            radioButton_Active.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Deleted
+            // 
+            radioButton_Deleted.AutoSize = true;
+            radioButton_Deleted.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_Deleted.ForeColor = Color.White;
+            radioButton_Deleted.Location = new Point(31, 16);
+            radioButton_Deleted.Name = "radioButton_Deleted";
+            radioButton_Deleted.Size = new Size(90, 27);
+            radioButton_Deleted.TabIndex = 48;
+            radioButton_Deleted.TabStop = true;
+            radioButton_Deleted.Text = "Deleted";
+            radioButton_Deleted.UseVisualStyleBackColor = true;
             // 
             // ManageForm
             // 
@@ -712,5 +757,8 @@
         private Button button_Clear;
         private Button button_search;
         private TextBox textBox_search;
+        private RadioButton radioButton_All;
+        private RadioButton radioButton_Active;
+        private RadioButton radioButton_Deleted;
     }
 }

@@ -26,35 +26,32 @@ namespace SIMS3
         // function to show data in datagridview
         private void showScore()
         {
-
-            dataGridView_score1.DataSource = scoreClass.getlist(new MySqlCommand("SELECT * FROM `score`"));
-            dataGridView_score1.Columns["IsActive"].Visible = false;
-
+            string query = "SELECT `Score ID`, `Student ID`, `CourseName`, `Score`, `Description` FROM `score` WHERE `IsActive` = 1 ORDER BY `Score ID` DESC";
+            dataGridView_score1.DataSource = scoreClass.getlist(new MySqlCommand(query));
+    
             dataGridView_score1.BackgroundColor = Color.FromArgb(34, 40, 64);
             dataGridView_score1.GridColor = Color.FromArgb(50, 60, 90);
 
-            // 2. The Header - Let's make it stand out with a lighter Slate Blue
             dataGridView_score1.EnableHeadersVisualStyles = false;
-            dataGridView_score1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); // Light Slate Blue
+            dataGridView_score1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); 
             dataGridView_score1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView_score1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dataGridView_score1.ColumnHeadersHeight = 40;
 
-            // 3. The Rows - Lighter Navy so the text is easier to read
-            dataGridView_score1.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); // Lighter navy row
-            dataGridView_score1.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); // Off-white text (easier on eyes)
-                                                                                            // 4. Alternating Rows - This adds "Zebra Stripes" to make it look much more modern
+
+            dataGridView_score1.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); 
+            dataGridView_score1.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); 
+                                                                                          
             dataGridView_score1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(37, 43, 68);
 
-            // 5. Selection Color - A nice highlight color
-            dataGridView_score1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); // Bright selection blue
+
+            dataGridView_score1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); 
             dataGridView_score1.DefaultCellStyle.SelectionForeColor = Color.White;
 
-            // Optional: Hide the little row header arrow column on the far left to make it cleaner
+
             dataGridView_score1.RowHeadersVisible = false;
             dataGridView_score1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            // 2. Center all the text inside every single cell in the grid
             dataGridView_score1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
@@ -76,31 +73,30 @@ namespace SIMS3
 
         private void showstudent()
         {
-            dataGridView_score1.DataSource = student.getlist(new MySqlCommand("SELECT `Student ID`, `FirstName`, `MiddleName`, `LastName`, `Suffix` FROM `student`"));
-            dataGridView_score1.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
-            dataGridView_score1.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
+            dataGridView_score1.DataSource = student.getlist(new MySqlCommand("SELECT `Student ID`, `FirstName`, `MiddleName`, `LastName`, `Suffix` FROM `student` WHERE `IsActive` = 1 ORDER BY `Student ID` DESC"));
+            dataGridView_score1.BackgroundColor = Color.FromArgb(34, 40, 64); 
+            dataGridView_score1.GridColor = Color.FromArgb(50, 60, 90);      
 
-            // 2. The Header - Let's make it stand out with a lighter Slate Blue
+
             dataGridView_score1.EnableHeadersVisualStyles = false;
-            dataGridView_score1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); // Light Slate Blue
+            dataGridView_score1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); 
             dataGridView_score1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView_score1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dataGridView_score1.ColumnHeadersHeight = 40;
 
-            // 3. The Rows - Lighter Navy so the text is easier to read
-            dataGridView_score1.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); // Lighter navy row
-            dataGridView_score1.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); // Off-white text (easier on eyes)
-                                                                                            // 4. Alternating Rows - This adds "Zebra Stripes" to make it look much more modern
+            dataGridView_score1.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); 
+            dataGridView_score1.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); 
+                                                                                           
             dataGridView_score1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(37, 43, 68);
 
-            // 5. Selection Color - A nice highlight color
-            dataGridView_score1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); // Bright selection blue
+
+            dataGridView_score1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); 
             dataGridView_score1.DefaultCellStyle.SelectionForeColor = Color.White;
 
-            // Optional: Hide the little row header arrow column on the far left to make it cleaner
+      
             dataGridView_score1.RowHeadersVisible = false;
             dataGridView_score1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            // 2. Center all the text inside every single cell in the grid
+
             dataGridView_score1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
@@ -116,18 +112,15 @@ namespace SIMS3
 
             try
             {
-                // 2. Gather all the data from your inputs
-                // Assuming your combobox is named comboBox_course based on your Form_Load code
+
                 int stdId = Convert.ToInt32(textBox_ID.Text);
                 string cName = comboBox_selectCourse.Text;
                 double score = Convert.ToDouble(textBox_Score.Text);
                 string desc = textBox_description.Text;
 
-                // 3. CHECK IF THE SCORE ALREADY EXISTS FIRST
                 if (!scoreClass.checkScore(stdId, cName))
                 {
-                    // 4. IF IT DOES NOT EXIST, INSERT IT
-                    // (Note: using your exact method name 'insertCourse' from the screenshot)
+
                     if (scoreClass.insertCourse(stdId, cName, score, desc))
                     {
                         MessageBox.Show("New score inserted successfully!", "Add Score", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -137,13 +130,11 @@ namespace SIMS3
                     }
                     else
                     {
-                        // Always good to have an error message if the insert fails!
                         MessageBox.Show("Score not inserted.", "Add Score", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    // 5. IF IT ALREADY EXISTS, SHOW THIS WARNING INSTEAD
                     MessageBox.Show("This student already has a score for this course!", "Duplicate Score", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
@@ -157,12 +148,9 @@ namespace SIMS3
 
         private void clearFields()
         {
-            // 1. Clear all the typing boxes
             textBox_ID.Clear();
             textBox_Score.Clear();
             textBox_description.Clear();
-
-            // 2. Reset the dropdown menu so nothing is selected
             comboBox_selectCourse.SelectedIndex = -1;
 
         }
@@ -184,8 +172,11 @@ namespace SIMS3
 
         private void dataGridView_Score1_Click(object sender, EventArgs e)
         {
-            textBox_ID.Text = dataGridView_score1.CurrentRow.Cells[0].Value.ToString();
+            if (dataGridView_score1.CurrentRow != null)
+            {
+                textBox_ID.Text = dataGridView_score1.CurrentRow.Cells["Student ID"].Value.ToString();
 
+            }
         }
 
         private void comboBox_selectCourse_SelectedIndexChanged(object sender, EventArgs e)

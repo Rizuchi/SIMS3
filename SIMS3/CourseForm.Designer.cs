@@ -42,6 +42,8 @@
             button_AddStudent = new Button();
             label12 = new Label();
             panel4 = new Panel();
+            courseCode = new TextBox();
+            label4 = new Label();
             textBox_department = new TextBox();
             label3 = new Label();
             textBox_units = new TextBox();
@@ -207,6 +209,8 @@
             // panel4
             // 
             panel4.BackColor = Color.FromArgb(17, 24, 39);
+            panel4.Controls.Add(courseCode);
+            panel4.Controls.Add(label4);
             panel4.Controls.Add(textBox_department);
             panel4.Controls.Add(label3);
             panel4.Controls.Add(textBox_units);
@@ -225,6 +229,33 @@
             panel4.Size = new Size(899, 194);
             panel4.TabIndex = 30;
             // 
+            // courseCode
+            // 
+            courseCode.Anchor = AnchorStyles.None;
+            courseCode.BackColor = Color.FromArgb(17, 24, 39);
+            courseCode.BorderStyle = BorderStyle.FixedSingle;
+            courseCode.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            courseCode.ForeColor = Color.White;
+            courseCode.Location = new Point(461, 129);
+            courseCode.Margin = new Padding(2, 3, 2, 3);
+            courseCode.Name = "courseCode";
+            courseCode.Size = new Size(162, 31);
+            courseCode.TabIndex = 56;
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.None;
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.FromArgb(54, 97, 139);
+            label4.Location = new Point(461, 93);
+            label4.Margin = new Padding(2, 0, 2, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(108, 23);
+            label4.TabIndex = 55;
+            label4.Text = "Course Code";
+            // 
             // textBox_department
             // 
             textBox_department.Anchor = AnchorStyles.None;
@@ -232,7 +263,7 @@
             textBox_department.BorderStyle = BorderStyle.FixedSingle;
             textBox_department.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_department.ForeColor = Color.White;
-            textBox_department.Location = new Point(314, 129);
+            textBox_department.Location = new Point(233, 129);
             textBox_department.Margin = new Padding(2);
             textBox_department.Name = "textBox_department";
             textBox_department.Size = new Size(162, 31);
@@ -245,7 +276,7 @@
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(54, 97, 139);
-            label3.Location = new Point(314, 93);
+            label3.Location = new Point(233, 93);
             label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
             label3.Size = new Size(102, 23);
@@ -259,11 +290,12 @@
             textBox_units.BorderStyle = BorderStyle.FixedSingle;
             textBox_units.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_units.ForeColor = Color.White;
-            textBox_units.Location = new Point(63, 129);
+            textBox_units.Location = new Point(15, 129);
             textBox_units.Margin = new Padding(2);
             textBox_units.Name = "textBox_units";
             textBox_units.Size = new Size(162, 31);
             textBox_units.TabIndex = 52;
+            textBox_units.KeyPress += textbox_CourseUnits_Keypress;
             // 
             // label2
             // 
@@ -272,7 +304,7 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(54, 97, 139);
-            label2.Location = new Point(63, 93);
+            label2.Location = new Point(15, 93);
             label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
             label2.Size = new Size(107, 23);
@@ -287,7 +319,7 @@
             button_Clear.FlatStyle = FlatStyle.Flat;
             button_Clear.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Clear.ForeColor = Color.White;
-            button_Clear.Location = new Point(705, 128);
+            button_Clear.Location = new Point(732, 138);
             button_Clear.Margin = new Padding(2);
             button_Clear.Name = "button_Clear";
             button_Clear.Size = new Size(142, 42);
@@ -303,7 +335,7 @@
             textBox_Description.BorderStyle = BorderStyle.FixedSingle;
             textBox_Description.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_Description.ForeColor = Color.White;
-            textBox_Description.Location = new Point(563, 49);
+            textBox_Description.Location = new Point(461, 49);
             textBox_Description.Margin = new Padding(2);
             textBox_Description.Name = "textBox_Description";
             textBox_Description.Size = new Size(273, 31);
@@ -316,7 +348,7 @@
             label10.BackColor = Color.Transparent;
             label10.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label10.ForeColor = Color.FromArgb(54, 97, 139);
-            label10.Location = new Point(554, 13);
+            label10.Location = new Point(452, 13);
             label10.Margin = new Padding(2, 0, 2, 0);
             label10.Name = "label10";
             label10.Size = new Size(102, 23);
@@ -330,11 +362,12 @@
             textBox_Hourse.BorderStyle = BorderStyle.FixedSingle;
             textBox_Hourse.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_Hourse.ForeColor = Color.White;
-            textBox_Hourse.Location = new Point(314, 49);
+            textBox_Hourse.Location = new Point(233, 49);
             textBox_Hourse.Margin = new Padding(2);
             textBox_Hourse.Name = "textBox_Hourse";
             textBox_Hourse.Size = new Size(162, 31);
             textBox_Hourse.TabIndex = 47;
+            textBox_Hourse.KeyPress += textbox_Hours_KeyPress;
             // 
             // textBox_Subject
             // 
@@ -343,7 +376,7 @@
             textBox_Subject.BorderStyle = BorderStyle.FixedSingle;
             textBox_Subject.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_Subject.ForeColor = Color.White;
-            textBox_Subject.Location = new Point(63, 49);
+            textBox_Subject.Location = new Point(15, 49);
             textBox_Subject.Margin = new Padding(2);
             textBox_Subject.Name = "textBox_Subject";
             textBox_Subject.Size = new Size(162, 31);
@@ -356,7 +389,7 @@
             label11.BackColor = Color.Transparent;
             label11.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label11.ForeColor = Color.FromArgb(54, 97, 139);
-            label11.Location = new Point(314, 13);
+            label11.Location = new Point(233, 13);
             label11.Margin = new Padding(2, 0, 2, 0);
             label11.Name = "label11";
             label11.Size = new Size(56, 23);
@@ -370,12 +403,12 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(54, 97, 139);
-            label1.Location = new Point(63, 13);
+            label1.Location = new Point(15, 13);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(117, 23);
+            label1.Size = new Size(114, 23);
             label1.TabIndex = 44;
-            label1.Text = "Subject Name";
+            label1.Text = "Course Name";
             // 
             // CourseForm
             // 
@@ -436,5 +469,7 @@
         private Label label3;
         private TextBox textBox_units;
         private Label label2;
+        private TextBox courseCode;
+        private Label label4;
     }
 }

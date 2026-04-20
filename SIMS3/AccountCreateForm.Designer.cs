@@ -31,6 +31,9 @@
             panel6 = new Panel();
             panel7 = new Panel();
             panel5 = new Panel();
+            radioButton_All = new RadioButton();
+            radioButton_Active = new RadioButton();
+            radioButton_Deleted = new RadioButton();
             button_search = new Button();
             textBox_search = new TextBox();
             panel3 = new Panel();
@@ -42,6 +45,8 @@
             button_addAccount = new Button();
             label12 = new Label();
             panel4 = new Panel();
+            comboBox_role = new ComboBox();
+            label4 = new Label();
             button_update = new Button();
             button_Delete = new Button();
             button_Clear = new Button();
@@ -87,6 +92,9 @@
             // 
             // panel5
             // 
+            panel5.Controls.Add(radioButton_All);
+            panel5.Controls.Add(radioButton_Active);
+            panel5.Controls.Add(radioButton_Deleted);
             panel5.Controls.Add(button_search);
             panel5.Controls.Add(textBox_search);
             panel5.Dock = DockStyle.Top;
@@ -95,6 +103,48 @@
             panel5.Name = "panel5";
             panel5.Size = new Size(959, 62);
             panel5.TabIndex = 24;
+            // 
+            // radioButton_All
+            // 
+            radioButton_All.AutoSize = true;
+            radioButton_All.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_All.ForeColor = Color.White;
+            radioButton_All.Location = new Point(245, 21);
+            radioButton_All.Name = "radioButton_All";
+            radioButton_All.Size = new Size(50, 27);
+            radioButton_All.TabIndex = 47;
+            radioButton_All.TabStop = true;
+            radioButton_All.Text = "All";
+            radioButton_All.UseVisualStyleBackColor = true;
+            radioButton_All.CheckedChanged += radioButton_All_CheckedChanged_1;
+            // 
+            // radioButton_Active
+            // 
+            radioButton_Active.AutoSize = true;
+            radioButton_Active.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_Active.ForeColor = Color.White;
+            radioButton_Active.Location = new Point(142, 21);
+            radioButton_Active.Name = "radioButton_Active";
+            radioButton_Active.Size = new Size(78, 27);
+            radioButton_Active.TabIndex = 46;
+            radioButton_Active.TabStop = true;
+            radioButton_Active.Text = "Active";
+            radioButton_Active.UseVisualStyleBackColor = true;
+            radioButton_Active.CheckedChanged += radioButton_Active_CheckedChanged_1;
+            // 
+            // radioButton_Deleted
+            // 
+            radioButton_Deleted.AutoSize = true;
+            radioButton_Deleted.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_Deleted.ForeColor = Color.White;
+            radioButton_Deleted.Location = new Point(30, 21);
+            radioButton_Deleted.Name = "radioButton_Deleted";
+            radioButton_Deleted.Size = new Size(90, 27);
+            radioButton_Deleted.TabIndex = 45;
+            radioButton_Deleted.TabStop = true;
+            radioButton_Deleted.Text = "Deleted";
+            radioButton_Deleted.UseVisualStyleBackColor = true;
+            radioButton_Deleted.CheckedChanged += radioButton_Deleted_CheckedChanged_1;
             // 
             // button_search
             // 
@@ -214,13 +264,15 @@
             label12.Location = new Point(15, 14);
             label12.Margin = new Padding(2, 0, 2, 0);
             label12.Name = "label12";
-            label12.Size = new Size(278, 37);
+            label12.Size = new Size(296, 37);
             label12.TabIndex = 0;
-            label12.Text = "Teacher Information";
+            label12.Text = "Accounts Information";
             // 
             // panel4
             // 
             panel4.BackColor = Color.FromArgb(17, 24, 39);
+            panel4.Controls.Add(comboBox_role);
+            panel4.Controls.Add(label4);
             panel4.Controls.Add(button_update);
             panel4.Controls.Add(button_Delete);
             panel4.Controls.Add(button_Clear);
@@ -241,6 +293,34 @@
             panel4.Size = new Size(899, 194);
             panel4.TabIndex = 42;
             panel4.Paint += panel4_Paint;
+            // 
+            // comboBox_role
+            // 
+            comboBox_role.Anchor = AnchorStyles.Top;
+            comboBox_role.BackColor = Color.FromArgb(11, 15, 26);
+            comboBox_role.FlatStyle = FlatStyle.Flat;
+            comboBox_role.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            comboBox_role.ForeColor = Color.White;
+            comboBox_role.FormattingEnabled = true;
+            comboBox_role.Location = new Point(248, 142);
+            comboBox_role.Margin = new Padding(3, 4, 3, 4);
+            comboBox_role.Name = "comboBox_role";
+            comboBox_role.Size = new Size(162, 33);
+            comboBox_role.TabIndex = 63;
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.None;
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.FromArgb(54, 97, 139);
+            label4.Location = new Point(251, 109);
+            label4.Margin = new Padding(2, 0, 2, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(44, 23);
+            label4.TabIndex = 62;
+            label4.Text = "Role";
             // 
             // button_update
             // 
@@ -518,5 +598,10 @@
         private Button button_search;
         private TextBox textBox_search;
         private Button button_update;
+        private ComboBox comboBox_role;
+        private Label label4;
+        private RadioButton radioButton_All;
+        private RadioButton radioButton_Active;
+        private RadioButton radioButton_Deleted;
     }
 }

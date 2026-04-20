@@ -90,23 +90,22 @@ namespace SIMS3
 
             connect.openConnect();
 
-  
+
             if (command.ExecuteNonQuery() == 1)
             {
                 connect.closeConnect();
-                return true; 
+                return true;
             }
             else
             {
                 connect.closeConnect();
-                return false; 
+                return false;
             }
         }
 
         // Create a function to "delete" (deactivate) a course by setting IsActive to 0
         public bool deleteScore(int stdId, string cName)
         {
-           
             string query = "UPDATE `score` SET `IsActive` = 0 WHERE `Student ID` = @stdId AND `CourseName` = @cName";
 
             MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
@@ -129,9 +128,20 @@ namespace SIMS3
         }
 
         // This is the same as SearchCourse but it also checks if IsActive = 1 to hide deleted courses
-        public DataTable SearchScore(string searchdata)
+        public DataTable SearchScore(string searchdata, int statusFilter)
         {
-            string query = "SELECT score.`Student ID` AS `Student ID`, student.FirstName AS `First Name`, student.LastName AS `Last Name`, score.CourseName AS `CourseName`, score.Score, score.Description, score.IsActive FROM score INNER JOIN student ON score.`Student ID` = student.`Student ID` WHERE (student.FirstName LIKE @search OR student.LastName LIKE @search OR score.CourseName LIKE @search OR score.`Student ID` LIKE @search) AND score.IsActive = 1";
+            string query = "SELECT score.`Student ID` AS `Student ID`, student.FirstName AS `First Name`, student.LastName AS `Last Name`, score.CourseName AS `CourseName`, score.Score, score.Description, score.IsActive FROM score INNER JOIN student ON score.`Student ID` = student.`Student ID` WHERE (student.FirstName LIKE @search OR student.LastName LIKE @search OR score.CourseName LIKE @search OR score.`Student ID` LIKE @search)";
+
+            if (statusFilter == 1)
+            {
+                query += " AND score.IsActive = 1";
+            }
+            else if (statusFilter == 0)
+            {
+                query += " AND score.IsActive = 0";
+            }
+
+            query += " ORDER BY score.`Student ID` DESC";
 
             MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
             command.Parameters.AddWithValue("@search", "%" + searchdata + "%");
@@ -141,9 +151,9 @@ namespace SIMS3
             adapter.Fill(table);
 
             return table;
+
+
         }
-
-
     }
 }
 

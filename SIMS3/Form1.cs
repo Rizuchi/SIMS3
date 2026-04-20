@@ -12,13 +12,48 @@ namespace SIMS3
         CourseClass course = new CourseClass();
         StudentClass student = new StudentClass();
 
-        public Form1()
+
+        private string firstName;
+        private string role;
+
+        public Form1(string fName, string userRole)
         {
             InitializeComponent();
 
+            this.firstName = fName;
+            this.role = userRole;
+
             hideSubMenu();
+            label7.Text = userRole;
 
+            CheckUserPermissions();
 
+        }
+
+        // hide button for teacher role 
+        private void CheckUserPermissions()
+        {
+
+            if (this.role == "Teacher")
+            {
+                panel5.Visible = false;
+                btnCourse.Visible = false;
+                pnlManage.Visible = false;
+                panel6.Visible = false;
+                btnSetup.Visible = false;
+                btnManageScore.Visible = false;
+                btnManage1.Visible = false;
+                btnMC.Visible = false;
+            }
+            else if (this.role == "Admin")
+            {
+
+                btnCourse.Visible = true;
+                btnSetup.Visible = true;
+                btnManageScore.Visible = true;
+                btnManage1.Visible = true;
+                btnMC.Visible = true;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -29,7 +64,7 @@ namespace SIMS3
             comboBox_class.DisplayMember = "CourseName";
             comboBox_class.ValueMember = "CourseName";
 
-            comboBox_class.SelectedIndex = -1; 
+            comboBox_class.SelectedIndex = -1;
 
             studentCount();
         }
@@ -40,6 +75,7 @@ namespace SIMS3
             label_male.Text = "Male: " + student.maleStudents();
             label_female.Text = "Female: " + student.femaleStudents();
         }
+        
 
 
         //toggle methods
@@ -166,24 +202,23 @@ namespace SIMS3
             openChildForm(new AccountCreateForm());
         }
 
-        // This event handler is triggered when the selected index of the comboBox_class changes
+
         private void comboBox_class_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (comboBox_class.SelectedValue == null || comboBox_class.SelectedIndex == -1)
+            {
+                label_enrolledmale.Text = "Male: 0";
+                label_enrolledfemale.Text = "Female: 0";
+                return;
+            }
 
-      
-            if (comboBox_class.SelectedValue == null || comboBox_class.SelectedIndex == -1) return;
-
-            string courseName = comboBox_class.SelectedValue.ToString();
-
-
+            string courseName = comboBox_class.Text;
             DataTable table = student.getStudentCountByCourse(courseName);
 
-     
             if (table.Rows.Count > 0)
             {
                 string maleCount = table.Rows[0]["MaleCount"].ToString();
                 string femaleCount = table.Rows[0]["FemaleCount"].ToString();
-
 
                 if (string.IsNullOrEmpty(maleCount)) maleCount = "0";
                 if (string.IsNullOrEmpty(femaleCount)) femaleCount = "0";
@@ -191,6 +226,33 @@ namespace SIMS3
                 label_enrolledmale.Text = "Male: " + maleCount;
                 label_enrolledfemale.Text = "Female: " + femaleCount;
             }
+
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            DialogResult dialog = MessageBox.Show("Are you sure you want to log out?", "Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialog == DialogResult.Yes)
+            {
+                this.Hide();
+                LoginForm login = new LoginForm();
+                login.ShowDialog();
+                this.Close();
+            }
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            if (activeForm != null)
+            {
+                activeForm.Close();
+                activeForm = null;
+            }
+            studentCount();
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
 
         }
     }

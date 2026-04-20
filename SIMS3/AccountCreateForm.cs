@@ -16,36 +16,39 @@ namespace SIMS3
         public AccountCreateForm()
         {
             InitializeComponent();
-            
+
         }
         public void showTeacher()
         {
-            // Make sure your DataGridView name matches exactly what is on your UI
-            dataGridView_Teacher.DataSource = teacherClass.getlist(new MySqlCommand("SELECT * FROM `teacher_account`"));
-            dataGridView_Teacher.BackgroundColor = Color.FromArgb(34, 40, 64); // Slightly lighter than the background
-            dataGridView_Teacher.GridColor = Color.FromArgb(50, 60, 90);      // Visible but soft grid lines
 
-            // 2. The Header - Let's make it stand out with a lighter Slate Blue
+            string query = "SELECT UserID, FirstName, LastName, Username, Password, Department, Role, IsActive FROM `user_accounts` WHERE CONCAT_WS(' ', `UserID`, `FirstName`, `LastName`, `Username`, `Department`, `Role`) LIKE @search AND `IsActive` = 1 ORDER BY UserID DESC";
+            MySqlCommand command = new MySqlCommand(query);
+            command.Parameters.AddWithValue("@search", "%" + textBox_search.Text.Trim() + "%");
+            dataGridView_Teacher.DataSource = teacherClass.getlist(command);
+
+            dataGridView_Teacher.BackgroundColor = Color.FromArgb(34, 40, 64);
+            dataGridView_Teacher.GridColor = Color.FromArgb(50, 60, 90);
+
             dataGridView_Teacher.EnableHeadersVisualStyles = false;
-            dataGridView_Teacher.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); // Light Slate Blue
+            dataGridView_Teacher.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94);
             dataGridView_Teacher.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView_Teacher.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dataGridView_Teacher.ColumnHeadersHeight = 40;
 
-            // 3. The Rows - Lighter Navy so the text is easier to read
-            dataGridView_Teacher.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); // Lighter navy row
-            dataGridView_Teacher.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); // Off-white text (easier on eyes)
-            // 4. Alternating Rows - This adds "Zebra Stripes" to make it look much more modern
+
+            dataGridView_Teacher.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80);
+            dataGridView_Teacher.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224);
+
             dataGridView_Teacher.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(37, 43, 68);
 
-            // 5. Selection Color - A nice highlight color
-            dataGridView_Teacher.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); // Bright selection blue
+
+            dataGridView_Teacher.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180);
             dataGridView_Teacher.DefaultCellStyle.SelectionForeColor = Color.White;
 
-            // Optional: Hide the little row header arrow column on the far left to make it cleaner
+
             dataGridView_Teacher.RowHeadersVisible = false;
             dataGridView_Teacher.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            // 2. Center all the text inside every single cell in the grid
+
             dataGridView_Teacher.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
         public void clearFields()
@@ -55,12 +58,36 @@ namespace SIMS3
             textBox_username.Clear();
             textBox_password.Clear();
             textBox_department.Clear();
+            radioButton_Active.Checked = false;
+            radioButton_Deleted.Checked = false;
+            radioButton_All.Checked = false;
+
+            comboBox_role.SelectedIndex = -1;
         }
 
         private void button_search_Click(object sender, EventArgs e)
         {
-            dataGridView_Teacher.DataSource = teacherClass.searchTeacher(textBox_search.Text);
+            // Default filter is 2 (Show all)
+            int filter = 2;
+
+            // Determine which radio button was selected
+            if (radioButton_Active.Checked)
+            {
+                filter = 1;
+            }
+            else if (radioButton_Deleted.Checked)
+            {
+                filter = 0;
+            }
+
+            dataGridView_Teacher.DataSource = teacherClass.searchTeacher(textBox_search.Text, filter);
+           clearFields();
         }
+        
+
+
+
+
 
         private void button_addAccount_Click(object sender, EventArgs e)
         {
@@ -78,22 +105,21 @@ namespace SIMS3
             }
 
 
-            if (teacherClass.checkDuplicateUsername(username))
+            if (IsAuthorized())
             {
-                MessageBox.Show("This Username is already taken! Please choose a different one.", "Duplicate Username", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+                // Get the role from your ComboBox
+                string role = comboBox_role.SelectedItem?.ToString() ?? "Teacher";
 
-
-            if (teacherClass.insertTeacher(fname, lname, username, password, dept))
-            {
-                MessageBox.Show("New Teacher Account added successfully!", "Add Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                showTeacher();
-                clearFields();
-            }
-            else
-            {
-                MessageBox.Show("Error adding the teacher account.", "Add Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (teacherClass.insertTeacher(fname, lname, username, password, dept, role))
+                {
+                    MessageBox.Show("New Teacher Account added successfully!", "Add Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    showTeacher();
+                    clearFields();
+                }
+                else
+                {
+                    MessageBox.Show("Error adding the teacher account.", "Add Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -105,22 +131,23 @@ namespace SIMS3
                 return;
             }
 
-            // 2. Ask for confirmation before disabling
+
             if (MessageBox.Show("Are you sure you want to disable this account?", "Disable Account", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                // 3. Pass currentTeacherId to the disable function instead of the old 'id'
-                if (teacherClass.disableAccount(currentTeacherId))
-                {
-                    MessageBox.Show("Account successfully disabled.", "Disable Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    showTeacher();
-                    clearFields();
 
-                    // 4. Reset the memory variable back to 0 so they don't accidentally delete someone twice!
-                    currentTeacherId = 0;
-                }
-                else
+                if (IsAuthorized())
                 {
-                    MessageBox.Show("Error disabling account.", "Disable Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (teacherClass.disableAccount(currentTeacherId))
+                    {
+                        MessageBox.Show("Account successfully disabled.", "Disable Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        showTeacher();
+                        clearFields();
+                        currentTeacherId = 0;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error disabling account.", "Disable Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -132,15 +159,33 @@ namespace SIMS3
 
         private void AccountCreateForm_Load(object sender, EventArgs e)
         {
+
+            comboBox_role.Items.Add("Admin");
+            comboBox_role.Items.Add("Teacher");
+
             clearFields();
             showTeacher();
         }
 
+
+        private bool IsAuthorized()
+        {
+            using (AuthForm authForm = new AuthForm())
+            {
+
+                if (authForm.ShowDialog() == DialogResult.OK)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         private void button_update_Click(object sender, EventArgs e)
         {
+
             if (currentTeacherId == 0)
             {
-                MessageBox.Show("Please select a teacher from the table first.", "Select Teacher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select an account from the table first.", "Select Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -149,29 +194,30 @@ namespace SIMS3
             string username = textBox_username.Text;
             string password = textBox_password.Text;
             string dept = textBox_department.Text;
+            string role = comboBox_role.SelectedItem?.ToString() ?? "Teacher";
 
-            // DUPLICATE CHECKER: Pass both the username AND their current ID
-            // Notice how it now says 'currentTeacherId' at the end of this line!
             if (teacherClass.checkDuplicateUsername(username, currentTeacherId))
             {
-                MessageBox.Show("This Username is already being used by another teacher! Please choose a different one.", "Duplicate Username", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"This Username is already being used by another {role}! Please choose a different one.", "Duplicate Username", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Since your update method already takes the password variable, whatever is in the text box right now will overwrite the old password!
-            if (teacherClass.updateTeacher(currentTeacherId, fname, lname, username, password, dept))
+            if (IsAuthorized())
             {
-                MessageBox.Show("Teacher Account Updated Successfully!", "Update Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (teacherClass.Teacherupdate(currentTeacherId, fname, lname, username, password, dept, role))
+                {
 
-                // We also want to reset the memory variable back to 0 after a successful update!
-                currentTeacherId = 0;
+                    MessageBox.Show($"{role} Account Updated Successfully!", "Update Account", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                showTeacher();
-                clearFields();
-            }
-            else
-            {
-                MessageBox.Show("Error updating teacher account.", "Update Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    currentTeacherId = 0;
+                    showTeacher();
+                    clearFields();
+                }
+                else
+                {
+
+                    MessageBox.Show($"Error updating {role} account.", "Update Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -184,19 +230,33 @@ namespace SIMS3
         {
             if (dataGridView_Teacher.CurrentRow != null && dataGridView_Teacher.CurrentRow.Index != -1)
             {
-              
                 currentTeacherId = Convert.ToInt32(dataGridView_Teacher.CurrentRow.Cells[0].Value);
-
-             
                 textBox_fname.Text = dataGridView_Teacher.CurrentRow.Cells[1].Value?.ToString();
                 textBox_lname.Text = dataGridView_Teacher.CurrentRow.Cells[2].Value?.ToString();
                 textBox_username.Text = dataGridView_Teacher.CurrentRow.Cells[3].Value?.ToString();
                 textBox_password.Text = dataGridView_Teacher.CurrentRow.Cells[4].Value?.ToString();
                 textBox_department.Text = dataGridView_Teacher.CurrentRow.Cells[5].Value?.ToString();
+
+                comboBox_role.Text = dataGridView_Teacher.CurrentRow.Cells[6].Value?.ToString();
             }
         }
 
         private void panel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void radioButton_Deleted_CheckedChanged_1(object sender, EventArgs e)
+        {
+     
+        }
+
+        private void radioButton_Active_CheckedChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton_All_CheckedChanged_1(object sender, EventArgs e)
         {
 
         }

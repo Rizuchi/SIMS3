@@ -24,25 +24,32 @@ namespace SIMS3
 
         private void button_search_Click(object sender, EventArgs e)
         {
-           
-            dataGridView_Student.DataSource = student.searchStudent(textBox_search.Text);
+            int filter = 2;
 
-            DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
+            if (radioButton_Active.Checked)
+            {
+                filter = 1;
+            }
+            else if (radioButton_Deleted.Checked)
+            {
+                filter = 0;
+            }
 
-        
-            imageColumn = (DataGridViewImageColumn)dataGridView_Student.Columns[9];
+            dataGridView_Student.DataSource = student.searchStudent(textBox_search.Text, filter);
 
-            imageColumn.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            if (dataGridView_Student.Columns.Count > 9 && dataGridView_Student.Columns[9] is DataGridViewImageColumn)
+            {
+                DataGridViewImageColumn imageColumn = (DataGridViewImageColumn)dataGridView_Student.Columns[9];
+                imageColumn.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            }
+            clear();
         }
 
         public void showTable()
         {
-          
-            dataGridView_Student.DataSource = student.getStudentlist(new MySqlCommand("SELECT * FROM `student`"));
-        
+            dataGridView_Student.DataSource = student.getStudentlist(new MySqlCommand("SELECT * FROM `student` WHERE `IsActive` = 1 ORDER BY `Student ID` DESC"));
 
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn();
-
 
             imageColumn = (DataGridViewImageColumn)dataGridView_Student.Columns[9];
 
@@ -54,20 +61,20 @@ namespace SIMS3
 
             // 2. The Header - Let's make it stand out with a lighter Slate Blue
             dataGridView_Student.EnableHeadersVisualStyles = false;
-            dataGridView_Student.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); // Light Slate Blue
+            dataGridView_Student.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94); 
             dataGridView_Student.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView_Student.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             dataGridView_Student.ColumnHeadersHeight = 40;
 
             // 3. The Rows - Lighter Navy so the text is easier to read
-            dataGridView_Student.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); // Lighter navy row
-            dataGridView_Student.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); // Off-white text (easier on eyes)
+            dataGridView_Student.DefaultCellStyle.BackColor = Color.FromArgb(44, 51, 80); 
+            dataGridView_Student.DefaultCellStyle.ForeColor = Color.FromArgb(224, 224, 224); 
 
             // 4. Alternating Rows - This adds "Zebra Stripes" to make it look much more modern
             dataGridView_Student.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(37, 43, 68);
 
             // 5. Selection Color - A nice highlight color
-            dataGridView_Student.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); // Bright selection blue
+            dataGridView_Student.DefaultCellStyle.SelectionBackColor = Color.FromArgb(100, 120, 180); 
             dataGridView_Student.DefaultCellStyle.SelectionForeColor = Color.White;
 
             // Optional: Hide the little row header arrow column on the far left to make it cleaner
@@ -104,7 +111,7 @@ namespace SIMS3
         //updatebutton forgot to rename
         private void button_AddStudent_Click(object sender, EventArgs e)
         {
-            // 1. GRAB THE ID (This is crucial for updating!)
+       
             int id = Convert.ToInt32(textBox_ID.Text);
 
             string fname = textBox_fname.Text;
@@ -128,7 +135,7 @@ namespace SIMS3
                 pictureBox_Student.Image.Save(ms, pictureBox_Student.Image.RawFormat);
                 byte[] img = ms.ToArray();
 
-                // we need to check student age between 10 and 100
+       
                 int born_year = dateTimePicker1.Value.Year;
                 int this_year = DateTime.Now.Year;
 
@@ -138,11 +145,12 @@ namespace SIMS3
                 }
                 else if (verify())
                 {
-                    // 2. CALL updateStudent AND PASS THE ID
+                 
                     if (student.updateStudent(id, fname, mname, lname, suffix, bdate, gender, phone, address, img))
                     {
                         showTable();
-                        // Changed the message boxes to say "Updated" instead of "Added"
+                        clear();
+                   
                         MessageBox.Show("Student Data Updated Successfully", "Update Student", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
@@ -158,7 +166,8 @@ namespace SIMS3
         }
 
 
-        private void button_Clear_Click(object sender, EventArgs e)
+
+        private void clear() 
         {
             textBox_fname.Clear();
             textBox_Mname.Clear();
@@ -166,16 +175,20 @@ namespace SIMS3
             textBox_Sufix.Clear();
             textBox_Number.Clear();
             textBox_Address.Clear();
-
-            // Clears the radio buttons (unchecks both)
+            textBox_ID.Clear();
+            textBox_search.Clear();
+            radioButton_All.Checked = false;
+            radioButton_Deleted.Checked = false;
+            radioButton_Active.Checked = false;
             radioButton_Male.Checked = false;
-            radioButton_Female.Checked = false; // Double-check this name matches your properties!
-
-            // Clears the photo
+            radioButton_Female.Checked = false;
             pictureBox_Student.Image = null;
-
-            // Resets the date picker to today's date
             dateTimePicker1.Value = DateTime.Now;
+
+        }
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+          clear();
         }
 
         private void ManageForm_Load(object sender, EventArgs e)
@@ -209,8 +222,7 @@ namespace SIMS3
                 radioButton_Male.Checked = true;
             }
             else
-            {
-              
+            { 
                 radioButton_Female.Checked = true;
             }
 
@@ -230,7 +242,6 @@ namespace SIMS3
         // This is the delete button event handler. It performs a soft delete by setting IsActive to 0.
         private void button_delete_Click(object sender, EventArgs e)
         {
-
             if (textBox_ID.Text == "")
             {
                 MessageBox.Show("Please select a student to delete.", "Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -238,7 +249,6 @@ namespace SIMS3
             }
 
             int id = Convert.ToInt32(textBox_ID.Text);
-
 
             DialogResult result = MessageBox.Show(
                 "Are you sure you want to delete this student?",
@@ -249,7 +259,6 @@ namespace SIMS3
 
             if (result == DialogResult.Yes)
             {
-
                 if (student.softDeleteStudent(id))
                 {
                     MessageBox.Show("Student deleted successfully!", "Delete Student", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -263,21 +272,12 @@ namespace SIMS3
                     textBox_Address.Clear();
                     textBox_ID.Clear();
 
-
                     radioButton_Female.Checked = false;
                     radioButton_Male.Checked = false;
 
-
                     dateTimePicker1.Value = DateTime.Now;
 
-
                     pictureBox_Student.Image = null;
-
-             
-                }
-                else
-                {
-                    MessageBox.Show("Student not deleted.", "Delete Student", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

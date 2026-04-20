@@ -221,6 +221,7 @@
             radioButton_all.TabStop = true;
             radioButton_all.Text = "All";
             radioButton_all.UseVisualStyleBackColor = false;
+            radioButton_all.CheckedChanged += radioButton_all_CheckedChanged;
             // 
             // radioButton_Male
             // 

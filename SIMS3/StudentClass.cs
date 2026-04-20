@@ -68,38 +68,46 @@ namespace SIMS3
             // Removed (string query)
             public string totalStudents()
             {
-                return exeCount("SELECT COUNT(*) FROM student");
+            return exeCount("SELECT COUNT(*) FROM student WHERE IsActive = 1");
             }
 
-            // Removed (string query) and fixed 'Gender' quotes
+          
             public string maleStudents()
             {
-                // Do not put quotes around the column name Gender
-                return exeCount("SELECT COUNT(*) FROM student WHERE Gender='Male'");
+      
+            return exeCount("SELECT COUNT(*) FROM student WHERE Gender = 'Male' AND IsActive = 1");
             }
 
             // Removed (string query), fixed quotes, and fixed "Femaale" typo
             public string femaleStudents()
             {
-                return exeCount("SELECT COUNT(*) FROM student WHERE Gender='Female'");
+            return exeCount("SELECT COUNT(*) FROM student WHERE Gender = 'Female' AND IsActive = 1");
             }
 
-            // function for student seach
+        // function for student seach
 
-            public DataTable searchStudent(string searchdata)
+        public DataTable searchStudent(string searchData, int statusFilter)
+        {
+            string query = "SELECT * FROM `student` WHERE CONCAT_WS(' ', `Student ID`, `FirstName`, `MiddleName`, `LastName`, `Suffix`) LIKE @search";
+            if (statusFilter == 1)
             {
-           
-             string query = "SELECT * FROM `student` WHERE CONCAT(`Student ID`, `FirstName`, `MiddleName`, `LastName`, `Suffix`) LIKE '%" + searchdata + "%'";
-
-              MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
-
-              MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-              DataTable table = new DataTable();
-              adapter.Fill(table);
-
-              return table;
-
+                query += " AND `IsActive` = 1";
             }
+            else if (statusFilter == 0)
+            {
+                query += " AND `IsActive` = 0";
+            }
+
+            MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
+            command.Parameters.AddWithValue("@search", "%" + searchData + "%");
+
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+
+            return table;
+        }
+        
 
 
     
@@ -155,9 +163,7 @@ namespace SIMS3
         // Method to "soft delete" a student by setting IsDeleted to 1
         public bool softDeleteStudent(int id)
         {
-
             MySqlCommand command = new MySqlCommand("UPDATE student SET IsActive = 0 WHERE `Student ID` = @id", connect.GetConnection());
-
             command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
 
             connect.openConnect();
@@ -173,36 +179,19 @@ namespace SIMS3
                 return false;
             }
         }
+        
 
-        // New method to get students by course name
-        public DataTable getStudentsByCourse(string courseName)
-        {
-     
-            string query = "SELECT * FROM `student` WHERE `Student ID` IN (SELECT `Student ID` FROM `score` WHERE `CourseName` = @cName) AND `IsActive` = 1";
-
-            MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
-            command.Parameters.AddWithValue("@cName", courseName);
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-            DataTable table = new DataTable();
-            adapter.Fill(table);
-
-            return table;
-        }
+       
 
         // Method to get student count by course
         public DataTable getStudentCountByCourse(string courseName)
         {
-            string query = @"
-        SELECT 
-            SUM(CASE WHEN student.Gender = 'Male' THEN 1 ELSE 0 END) AS MaleCount,
-            SUM(CASE WHEN student.Gender = 'Female' THEN 1 ELSE 0 END) AS FemaleCount
-        FROM student 
-        INNER JOIN score ON student.`Student ID` = score.`Student ID`
-        WHERE score.CourseName = @cName AND student.IsActive = 1";
+            string query = @"SELECT COUNT(DISTINCT CASE WHEN student.Gender = 'Male' THEN student.`Student ID` END) AS MaleCount, COUNT(DISTINCT CASE WHEN student.Gender = 'Female' THEN student.`Student ID` END) AS FemaleCount FROM student INNER JOIN score ON student.`Student ID` = score.`Student ID` WHERE TRIM(score.CourseName) = TRIM(@cName) AND student.IsActive = 1";
 
             MySqlCommand command = new MySqlCommand(query, connect.GetConnection());
-            command.Parameters.AddWithValue("@cName", courseName);
+
+            // THE FIX: Trim the incoming string just to be extra safe
+            command.Parameters.AddWithValue("@cName", courseName.Trim());
 
             MySqlDataAdapter adapter = new MySqlDataAdapter(command);
             DataTable table = new DataTable();
@@ -210,6 +199,9 @@ namespace SIMS3
 
             return table;
         }
+
+
+
 
     }
 }

@@ -224,7 +224,7 @@
             button_Upload.FlatStyle = FlatStyle.Flat;
             button_Upload.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Upload.ForeColor = Color.White;
-            button_Upload.Location = new Point(373, 508);
+            button_Upload.Location = new Point(372, 501);
             button_Upload.Margin = new Padding(2);
             button_Upload.Name = "button_Upload";
             button_Upload.Size = new Size(135, 34);
@@ -250,7 +250,7 @@
             // 
             pictureBox_Student.Anchor = AnchorStyles.Top;
             pictureBox_Student.BackColor = Color.FromArgb(30, 49, 90);
-            pictureBox_Student.Location = new Point(392, 403);
+            pictureBox_Student.Location = new Point(389, 387);
             pictureBox_Student.Margin = new Padding(2);
             pictureBox_Student.Name = "pictureBox_Student";
             pictureBox_Student.Size = new Size(100, 100);
